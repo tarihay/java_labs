@@ -16,7 +16,7 @@ public class ParseArguments {
         final int LENGTH_WITHOUT_COMMAND = arguments.length - 1;
         String command = arguments[COMMAND_POS];
         String[] additions = new String[LENGTH_WITHOUT_COMMAND];
-        if (arguments.length - 1 > NO_ARGS) {
+        if (LENGTH_WITHOUT_COMMAND > NO_ARGS) {
             System.arraycopy(arguments, FIRST_ARG, additions, ARRAY_START, LENGTH_WITHOUT_COMMAND);
         }
 
