@@ -5,7 +5,7 @@ import Calculator.Commands.*;
 /**
  * Класс реализации Фабрики команд калькулятора
  */
-public class Fabric {
+public class Factory {
     /**
      * Метод возвращает реализацию по указанной команде
      *

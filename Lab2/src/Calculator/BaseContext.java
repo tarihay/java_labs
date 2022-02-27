@@ -32,11 +32,19 @@ public class BaseContext {
         return stack;
     }
 
-    public void define(String name, double num) {
-        defines.put(name, num);
+    public HashMap<String, Double> getDefines() {
+        return defines;
+    }
+
+    public void define(String key, double value) {
+        defines.put(key, value);
     }
 
     public double getDefine(String name) {
         return defines.get(name);
+    }
+
+    public boolean containsArg(String name) {
+        return defines.containsKey(name);
     }
 }

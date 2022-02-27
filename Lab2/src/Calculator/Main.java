@@ -9,14 +9,11 @@ public class Main {
 
     public static void main(String[] args) throws Exception {
         BaseContext context = new BaseContext();
-        //TODO: Вставить логику парсинга строки
-
-        Worker factory = Fabric.createFactory("POP");
-        factory.execute(context, args);
 
         final int inputMethod;
         if (args.length == 0) {
-            StreamInput input;
+            StreamInput input = new StreamInput();
+            input.parseStream(context);
         }
         else if (args.length == 1) {
             inputMethod = FILE;
