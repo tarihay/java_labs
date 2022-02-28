@@ -1,8 +1,8 @@
 import java.io.File;
 
 public class Validity {
-    public static final int REQUIRED_ARG_AMOUNT = 2;
-    public static final int ERROR = 1;
+    private static final int REQUIRED_ARG_AMOUNT = 2;
+    private static final int ERROR = 1;
 
     public static void checkValidity(int argsCount, String finName, String foutName) {
         File fin = new File(finName);

@@ -4,8 +4,8 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 public class Input {
-    public static final String REGULAR_EXP = "[А-Яа-яЁёA-Za-z_0-9]+";
-    public static final int FIRST_TIME = 1;
+    private static final String REGULAR_EXP = "[А-Яа-яЁёA-Za-z_0-9]+";
+    private static final int FIRST_TIME = 1;
 
     public static HashMap<String, Integer> fileInput(String finName) {
         File fin = new File(finName);

@@ -5,7 +5,7 @@ import java.text.DecimalFormat;
 import java.util.List;
 
 public class Output {
-    public static final String TWO_DIGIT_FORMAT = "#0.00";
+    private static final String TWO_DIGIT_FORMAT = "#0.00";
 
     public static void fileOutput(String outName, List<FrequencyWordData> frequencyWordData) {
         File fout = new File(outName);

@@ -1,12 +1,8 @@
 import java.util.*;
 
 public class DataTreatment {
-    public static final int DEFAULT = 0;
-    public static final int MAX_PERCENT = 100;
-
-    interface MyComparator {
-        public int frequencyComparator(FrequencyWordData first, FrequencyWordData second);
-    }
+    private static final int DEFAULT = 0;
+    private static final int MAX_PERCENT = 100;
 
     public static List<FrequencyWordData> fillAndSortByFrequency(HashMap<String, Integer> wordData) {
         int wordsCount = DEFAULT;

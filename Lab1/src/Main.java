@@ -2,12 +2,12 @@ import java.util.HashMap;
 import java.util.List;
 
 public class Main {
-    public static final int FIRST_ARG = 0;
-    public static final int SECOND_ARG = 1;
+    private static final int INPUT_ARG = 0;
+    private static final int OUTPUT_ARG = 1;
 
     public static void main(String[] args) {
-        String finName = args[FIRST_ARG];
-        String foutName = args[SECOND_ARG];
+        String finName = args[INPUT_ARG];
+        String foutName = args[OUTPUT_ARG];
         Validity.checkValidity(args.length, finName, foutName);
 
         HashMap<String, Integer> wordData = Input.fileInput(finName);
