@@ -2,6 +2,11 @@ package Calculator;
 
 import Calculator.Commands.*;
 
+import java.util.Objects;
+
+import static Calculator.Constants.FILE_METHOD;
+import static Calculator.Constants.STREAM_METHOD;
+
 /**
  * Класс реализации Фабрики команд калькулятора
  */
@@ -11,7 +16,7 @@ public class Factory {
      *
      * @param command - имя команды
      */
-    public static Worker createFactory(String command) throws ClassNotFoundException {
+    public static Worker createFactory(BaseContext context, String command) throws ClassNotFoundException {
         switch (command) {
             case "POP" -> {
                 return new PopCommand();
@@ -32,7 +37,13 @@ public class Factory {
                 return new DivisionCommand();
             }
             case "PRINT" -> {
-                return new PrintCommand();
+                String inputMethod = context.getInputMethod();
+                if (Objects.equals(inputMethod, FILE_METHOD)) {
+                    return new FilePrintCommand();
+                }
+                else {
+                    return new StreamPrintCommand();
+                }
             }
             case "SQRT" -> {
                 return new SqrtCommand();

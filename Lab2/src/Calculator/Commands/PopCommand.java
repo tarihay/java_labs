@@ -17,6 +17,7 @@ public class PopCommand implements Worker {
      * Метод удаляет верхний элемент стэка из context
      * @param context объект класса, содержащий стэк, мапу и методы для работы с ними
      * @param arguments аргументы, передающиеся для команды
+     * @see Calculator.BaseContext
      */
     @Override
     public void execute(BaseContext context, String[] arguments) throws Exception {

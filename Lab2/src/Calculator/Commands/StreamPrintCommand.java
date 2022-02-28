@@ -3,19 +3,18 @@ package Calculator.Commands;
 import Calculator.BaseContext;
 import Calculator.Exceptions.CommandArgsAmountException;
 
-import java.util.EmptyStackException;
-import static Calculator.Constants.DEFAULT;
+import static Calculator.Constants.FLOAT_DIFFERENCE;
 
 /**
- * Класс команды '+' стэкового калькулятора, имплементирующий Worker
+ * Класс команды PRINT стэкового калькулятора, имплементирующий Worker
  * @see Calculator.Commands.Worker
- * @see Calculator.Commands.PlusCommand#execute(BaseContext, String[])
+ * @see StreamPrintCommand#execute(BaseContext, String[])
  */
-public class PlusCommand implements Worker {
+public class StreamPrintCommand implements Worker{
     private static final int ARGS_COUNT = 0;
 
     /**
-     * Метод реализует сложение двух верхних элементов стэка. Результат возвращается на стэк
+     * Метод выводит в консоль верхний элемент стэка из context
      * @param context объект класса, содержащий стэк, мапу и методы для работы с ними
      * @param arguments аргументы, передающиеся для команды
      * @see Calculator.BaseContext
@@ -25,16 +24,13 @@ public class PlusCommand implements Worker {
         if (arguments.length != ARGS_COUNT) {
             throw new CommandArgsAmountException("Wrongs amount of parametres");
         }
-        double num1 = DEFAULT;
-        double num2 = DEFAULT;
-        try {
-            num1 = context.popReturn();
-            num2 = context.popReturn();
+        double peekNum = context.peek();
+        int intPeekNum = (int) peekNum;
+        if (peekNum - intPeekNum == FLOAT_DIFFERENCE) {
+            System.out.println(intPeekNum);
         }
-        catch (EmptyStackException ex) {
-            ex.printStackTrace();
+        else {
+            System.out.println(peekNum);
         }
-
-        context.push(num1 + num2);
     }
 }
