@@ -1,16 +1,16 @@
-package Calculator.Commands;
+package calculator.commands;
 
-import Calculator.BaseContext;
-import Calculator.Exceptions.CommandArgsAmountException;
+import calculator.BaseContext;
+import calculator.exceptions.CommandArgsAmountException;
 
 import java.util.EmptyStackException;
 
-import static Calculator.Constants.DEFAULT;
+import static calculator.Constants.DEFAULT;
 
 /**
  * Класс команды '/' стэкового калькулятора, имплементирующий Worker
- * @see Calculator.Commands.Worker
- * @see Calculator.Commands.DivisionCommand#execute(BaseContext, String[])
+ * @see calculator.commands.Worker
+ * @see calculator.commands.DivisionCommand#execute(BaseContext, String[])
  */
 public class DivisionCommand implements Worker{
     private static final int ARGS_COUNT = 0;
@@ -19,7 +19,7 @@ public class DivisionCommand implements Worker{
      * Метод реализует деление двух верхних элементов стэка. Результат возвращается на стэк
      * @param context объект класса, содержащий стэк, мапу и методы для работы с ними
      * @param arguments аргументы, передающиеся для команды
-     * @see Calculator.BaseContext
+     * @see calculator.BaseContext
      */
     @Override
     public void execute(BaseContext context, String[] arguments) throws Exception{

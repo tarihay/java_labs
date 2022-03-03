@@ -1,6 +1,6 @@
-package Calculator.Commands;
+package calculator.commands;
 
-import Calculator.BaseContext;
+import calculator.BaseContext;
 
 /**
  * Интерфейс, от которого имплементируются блоки

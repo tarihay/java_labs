@@ -1,16 +1,16 @@
-package Calculator.Commands;
+package calculator.commands;
 
-import Calculator.BaseContext;
-import Calculator.Exceptions.CommandArgsAmountException;
+import calculator.BaseContext;
+import calculator.exceptions.CommandArgsAmountException;
 
-import static Calculator.Constants.FIRST_ARGUMENT;
-import static Calculator.Constants.SECOND_ARGUMENT;
-import static Calculator.Constants.DEFAULT;
+import static calculator.Constants.FIRST_ARGUMENT;
+import static calculator.Constants.SECOND_ARGUMENT;
+import static calculator.Constants.DEFAULT;
 
 /**
  * Класс команды DEFINE стэкового калькулятора, имплементирующий Worker
- * @see Calculator.Commands.Worker
- * @see Calculator.Commands.DefineCommand#execute(BaseContext, String[])
+ * @see calculator.commands.Worker
+ * @see calculator.commands.DefineCommand#execute(BaseContext, String[])
  */
 public class DefineCommand implements Worker {
     private static final int ARGS_COUNT = 2;
@@ -19,7 +19,7 @@ public class DefineCommand implements Worker {
      * Метод создает define в мапе со строкой-ключом и числом-значением
      * @param context объект класса, содержащий стэк, мапу и методы для работы с ними
      * @param arguments аргументы, передающиеся для команды
-     * @see Calculator.BaseContext
+     * @see calculator.BaseContext
      */
     @Override
     public void execute(BaseContext context, String[] arguments) throws Exception {

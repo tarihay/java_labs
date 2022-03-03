@@ -1,14 +1,14 @@
-package Calculator;
+package calculator;
 
-import Calculator.Commands.Worker;
+import calculator.commands.Worker;
 
 import java.util.Objects;
 
 /**
  * Класс с методом парсинга массива строк, вышедшего из FileTreatment или StreamInput. Зависит от метода ввода
- * @see Calculator.ParseArguments#parseArgs(String[], BaseContext)
- * @see Calculator.FileTreatment
- * @see Calculator.StreamInput
+ * @see calculator.ParseArguments#parseArgs(String[], BaseContext)
+ * @see calculator.FileTreatment
+ * @see calculator.StreamInput
  */
 public class ParseArguments {
     private static final int FIRST_ARG = 1;
@@ -23,9 +23,9 @@ public class ParseArguments {
      * Метод выделяет строку с командой и строку с аргументами, если таковые имеются
      * @param arguments массив строк, содержащий команду и аргументы (если имеются)
      * @param context Экземпляр класса BaseContext, в котором хранятся стэк, мапа и методы для работы с ними
-     * @see Calculator.FileTreatment
-     * @see Calculator.StreamInput
-     * @see Calculator.BaseContext
+     * @see calculator.FileTreatment
+     * @see calculator.StreamInput
+     * @see calculator.BaseContext
      */
     public static void parseArgs(String[] arguments, BaseContext context) throws Exception{
         final int LENGTH_WITHOUT_COMMAND = arguments.length - 1;

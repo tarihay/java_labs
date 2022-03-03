@@ -1,4 +1,4 @@
-package Calculator.Exceptions;
+package calculator.exceptions;
 
 public class ArgsAmountException extends Exception {
     public ArgsAmountException(String message) {

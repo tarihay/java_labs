@@ -1,4 +1,4 @@
-package Calculator.Exceptions;
+package calculator.exceptions;
 
 public class CommandArgsAmountException extends Exception {
     public CommandArgsAmountException(String message) {

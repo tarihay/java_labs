@@ -1,4 +1,4 @@
-package Calculator;
+package calculator;
 
 import java.io.*;
 
@@ -12,8 +12,8 @@ public class FileTreatment {
      * Метод построчно считывает данные с файла и парсит их, разбивая на "команду" и ее аргументы
      * Вызывает метод parseArgs класса ParseArguments для разделения команды и аргументов (если имеются)
      * @param context Экземпляр класса BaseContext, в котором хранятся стэк, мапа и методы для работы с ними
-     * @see Calculator.BaseContext
-     * @see Calculator.ParseArguments
+     * @see calculator.BaseContext
+     * @see calculator.ParseArguments
      */
     public static void parseFile(BaseContext context) throws Exception {
         File fin = new File(context.getFinName());

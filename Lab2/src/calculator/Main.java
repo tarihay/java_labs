@@ -1,14 +1,11 @@
-package Calculator;
+package calculator;
 
-import Calculator.Commands.Worker;
-import Calculator.Exceptions.*;
+import calculator.exceptions.*;
 
-import java.io.FileWriter;
-
-import static Calculator.Constants.FILE_METHOD;
-import static Calculator.Constants.STREAM_METHOD;
-import static Calculator.Constants.INPUT_ARGUMENT;
-import static Calculator.Constants.OUTPUT_ARGUMENT;
+import static calculator.Constants.FILE_METHOD;
+import static calculator.Constants.STREAM_METHOD;
+import static calculator.Constants.INPUT_ARGUMENT;
+import static calculator.Constants.OUTPUT_ARGUMENT;
 
 public class Main {
     private static final int NO_ARGS = 0;

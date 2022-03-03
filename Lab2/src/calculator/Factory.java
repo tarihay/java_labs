@@ -1,11 +1,10 @@
-package Calculator;
+package calculator;
 
-import Calculator.Commands.*;
+import calculator.commands.*;
 
 import java.util.Objects;
 
-import static Calculator.Constants.FILE_METHOD;
-import static Calculator.Constants.STREAM_METHOD;
+import static calculator.Constants.FILE_METHOD;
 
 /**
  * Класс реализации Фабрики команд калькулятора

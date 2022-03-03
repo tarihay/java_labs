@@ -1,4 +1,4 @@
-package Calculator;
+package calculator;
 
 import java.util.HashMap;
 import java.util.Stack;
@@ -51,6 +51,12 @@ public class BaseContext {
 
     public void push(double num) {
         stack.push(num);
+    }
+
+    public void push(String arg) {
+        if (defines.containsKey(arg)) {
+            stack.push(defines.get(arg));
+        }
     }
 
     public void popDelete() {

@@ -1,15 +1,15 @@
-package Calculator.Commands;
+package calculator.commands;
 
-import Calculator.BaseContext;
-import Calculator.Exceptions.CommandArgsAmountException;
+import calculator.BaseContext;
+import calculator.exceptions.CommandArgsAmountException;
 
-import static Calculator.Constants.DEFAULT;
-import static Calculator.Constants.FIRST_ARGUMENT;
+import static calculator.Constants.DEFAULT;
+import static calculator.Constants.FIRST_ARGUMENT;
 
 /**
  * Класс команды PUSH стэкового калькулятора, имплементирующий Worker
- * @see Calculator.Commands.Worker
- * @see Calculator.Commands.PushCommand#execute(BaseContext, String[])
+ * @see calculator.commands.Worker
+ * @see calculator.commands.PushCommand#execute(BaseContext, String[])
  */
 public class PushCommand implements Worker{
     private static final int ARGS_COUNT = 1;
@@ -18,7 +18,7 @@ public class PushCommand implements Worker{
      * Метод кладет аргумент команды на стэк в context
      * @param context объект класса, содержащий стэк, мапу и методы для работы с ними
      * @param arguments аргументы, передающиеся для команды
-     * @see Calculator.BaseContext
+     * @see calculator.BaseContext
      */
     @Override
     public void execute(BaseContext context, String[] arguments) throws Exception {
