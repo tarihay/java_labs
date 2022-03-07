@@ -16,17 +16,18 @@ public class Main {
     private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
-        logger.info("Bla Bla Bla");
         if (args.length == NO_ARGS) {
+            logger.info("There are no args. Program starts with console input");
             BaseContext context = new BaseContext(STREAM_METHOD);
             StreamInput.parseStream(context);
         }
         else if (args.length == IN_OUT_ARGS) {
+            logger.info("There are 2 args. Program starts with file input");
             BaseContext context = new BaseContext(args[INPUT_ARGUMENT], args[OUTPUT_ARGUMENT], FILE_METHOD);
             FileTreatment.parseFile(context);
         }
         else {
-            throw new ArgsAmountException("Wrong amount of arguments. Check command line");
+            logger.error("Wrong amount of arguments given");
         }
     }
 }

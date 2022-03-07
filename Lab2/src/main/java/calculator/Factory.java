@@ -12,7 +12,6 @@ import static calculator.Constants.FILE_METHOD;
  * Класс реализации Фабрики команд калькулятора
  */
 public class Factory {
-    private static final Logger logger = LogManager.getLogger(Main.class);
 
     /**
      * Метод возвращает реализацию по указанной команде
@@ -55,7 +54,6 @@ public class Factory {
                 return new DefineCommand();
             }
             default -> {
-                logger.error("Command not found");
                 throw new ClassNotFoundException("No such class found");
             }
         }

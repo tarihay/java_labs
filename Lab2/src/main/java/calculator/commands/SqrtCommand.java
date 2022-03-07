@@ -2,6 +2,8 @@ package calculator.commands;
 
 import calculator.BaseContext;
 import calculator.exceptions.CommandArgsAmountException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.EmptyStackException;
 
@@ -14,6 +16,8 @@ import static calculator.Constants.DEFAULT;
  */
 public class SqrtCommand implements Worker {
     private static final int ARGS_COUNT = 0;
+
+    private static final Logger logger = LogManager.getLogger(SqrtCommand.class);
 
     /**
      * Метод вычисляет квадратный корень верхнего на стэке числа и кладет результат обратно
@@ -31,7 +35,7 @@ public class SqrtCommand implements Worker {
             num = context.popReturn();
         }
         catch (EmptyStackException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
         num = Math.sqrt(num);

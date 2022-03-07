@@ -1,6 +1,8 @@
 package calculator;
 
 import calculator.commands.Worker;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
@@ -18,6 +20,8 @@ public class ParseArguments {
 
     private static final char COMMENT = '#';
 
+    private static final Logger logger = LogManager.getLogger(ParseArguments.class);
+
     /**
      * Метод обработки массива строк, вышедшего из вышедшего из FileTreatment или StreamInput. Зависит от метода ввода
      * Метод выделяет строку с командой и строку с аргументами, если таковые имеются
@@ -27,7 +31,14 @@ public class ParseArguments {
      * @see calculator.StreamInput
      * @see calculator.BaseContext
      */
-    public static void parseArgs(String[] arguments, BaseContext context) throws Exception{
+    public static void parseArgs(String[] arguments, BaseContext context) throws Exception {
+        if (arguments.length == NO_ARGS) {
+            logger.error("No arguments given");
+        }
+        else {
+            logger.info("Run parseArgs with arguments");
+        }
+
         final int LENGTH_WITHOUT_COMMAND = arguments.length - 1;
         String command = arguments[COMMAND_POS];
         String[] additions = new String[LENGTH_WITHOUT_COMMAND];

@@ -2,6 +2,8 @@ package calculator.commands;
 
 import calculator.BaseContext;
 import calculator.exceptions.CommandArgsAmountException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.EmptyStackException;
 
@@ -12,6 +14,8 @@ import java.util.EmptyStackException;
  */
 public class PopCommand implements Worker {
     private static final int ARGS_COUNT = 0;
+
+    private static final Logger logger = LogManager.getLogger(PopCommand.class);
 
     /**
      * Метод удаляет верхний элемент стэка из context
@@ -28,7 +32,7 @@ public class PopCommand implements Worker {
             context.popDelete();
         }
         catch (EmptyStackException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
     }
 }

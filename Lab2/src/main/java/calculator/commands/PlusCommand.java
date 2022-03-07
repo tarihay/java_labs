@@ -2,6 +2,8 @@ package calculator.commands;
 
 import calculator.BaseContext;
 import calculator.exceptions.CommandArgsAmountException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.EmptyStackException;
 import static calculator.Constants.DEFAULT;
@@ -13,6 +15,8 @@ import static calculator.Constants.DEFAULT;
  */
 public class PlusCommand implements Worker {
     private static final int ARGS_COUNT = 0;
+
+    private static final Logger logger = LogManager.getLogger(PlusCommand.class);
 
     /**
      * Метод реализует сложение двух верхних элементов стэка. Результат возвращается на стэк
@@ -32,7 +36,7 @@ public class PlusCommand implements Worker {
             num2 = context.popReturn();
         }
         catch (EmptyStackException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
         context.push(num1 + num2);

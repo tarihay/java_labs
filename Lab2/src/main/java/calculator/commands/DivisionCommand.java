@@ -2,6 +2,9 @@ package calculator.commands;
 
 import calculator.BaseContext;
 import calculator.exceptions.CommandArgsAmountException;
+import calculator.exceptions.DivisionByZeroException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.EmptyStackException;
 
@@ -14,6 +17,9 @@ import static calculator.Constants.DEFAULT;
  */
 public class DivisionCommand implements Worker{
     private static final int ARGS_COUNT = 0;
+    private static final int ZERO = 0;
+
+    private static final Logger logger = LogManager.getLogger(DivisionCommand.class);
 
     /**
      * Метод реализует деление двух верхних элементов стэка. Результат возвращается на стэк
@@ -34,9 +40,12 @@ public class DivisionCommand implements Worker{
             num2 = context.popReturn();
         }
         catch (EmptyStackException ex) {
-            ex.printStackTrace();
+            logger.error(ex.getMessage());
         }
 
+        if (num1 == ZERO) {
+            throw new DivisionByZeroException("It could be division by zero. Be careful!");
+        }
         context.push(num2 / num1);
     }
 }

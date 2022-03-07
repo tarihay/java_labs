@@ -25,6 +25,9 @@ public class FileTreatment {
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fin));
             String curStr = reader.readLine();
+            if (curStr == null) {
+                logger.info("Current string is already empty");
+            }
             while (curStr != null) {
                 String[] arguments = curStr.split(DELIMETER);
 
@@ -33,8 +36,7 @@ public class FileTreatment {
                 curStr = reader.readLine();
             }
         } catch (IOException ex) {
-            logger.error(ex);
-            ex.printStackTrace();
+            logger.error(ex.getMessage() + "\n Check BufferedReader or FileReader");
         }
     }
 }

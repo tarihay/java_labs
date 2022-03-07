@@ -2,6 +2,10 @@ package calculator.commands;
 
 import calculator.BaseContext;
 import calculator.exceptions.CommandArgsAmountException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
+import java.util.EmptyStackException;
 
 import static calculator.Constants.FLOAT_DIFFERENCE;
 
@@ -12,6 +16,8 @@ import static calculator.Constants.FLOAT_DIFFERENCE;
  */
 public class StreamPrintCommand implements Worker{
     private static final int ARGS_COUNT = 0;
+
+    private static final Logger logger = LogManager.getLogger(StreamPrintCommand.class);
 
     /**
      * Метод выводит в консоль верхний элемент стэка из context
@@ -24,13 +30,19 @@ public class StreamPrintCommand implements Worker{
         if (arguments.length != ARGS_COUNT) {
             throw new CommandArgsAmountException("Wrongs amount of parametres");
         }
-        double peekNum = context.peek();
-        int intPeekNum = (int) peekNum;
-        if (peekNum - intPeekNum == FLOAT_DIFFERENCE) {
-            System.out.println(intPeekNum);
+
+        try {
+            double peekNum = context.peek();
+            int intPeekNum = (int) peekNum;
+            if (peekNum - intPeekNum == FLOAT_DIFFERENCE) {
+                System.out.println(intPeekNum);
+            }
+            else {
+                System.out.println(peekNum);
+            }
         }
-        else {
-            System.out.println(peekNum);
+        catch (EmptyStackException ex) {
+            logger.error(ex.getMessage());
         }
     }
 }
