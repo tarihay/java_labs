@@ -5,18 +5,17 @@ import calculator.exceptions.CommandArgsAmountException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static calculator.Constants.DEFAULT;
-import static calculator.Constants.FIRST_ARGUMENT;
+import static calculator.Constants.*;
 
 /**
  * Класс команды PUSH стэкового калькулятора, имплементирующий Worker
  * @see calculator.commands.Worker
  * @see calculator.commands.PushCommand#execute(BaseContext, String[])
  */
-public class PushCommand implements Worker{
-    private static final int ARGS_COUNT = 1;
-
+public class PushCommand implements Worker {
     private static final Logger logger = LogManager.getLogger(PushCommand.class);
+
+    private static final int ARGS_COUNT = 1;
 
     /**
      * Метод кладет аргумент команды на стэк в context
@@ -34,16 +33,16 @@ public class PushCommand implements Worker{
 
         if (context.containsArg(curArg)) {
             num = context.getDefine(curArg);
+            context.push(num);
         }
         else {
             try {
                 num = Double.parseDouble(curArg);
+                context.push(num);
             }
             catch (NumberFormatException ex) {
-                logger.error("Parsing failed" + ex.getMessage());
+                logger.error("Parsing failed: ", ex);
             }
         }
-
-        context.push(num);
     }
 }

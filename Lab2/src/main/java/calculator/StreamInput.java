@@ -1,5 +1,8 @@
 package calculator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.Objects;
 import java.util.Scanner;
 
@@ -7,6 +10,8 @@ import java.util.Scanner;
  * Класс обработки данных с потока с консоли
  */
 public class StreamInput {
+    private static final Logger logger = LogManager.getLogger(StreamInput.class);
+
     private static final String END_COMMAND = "END";
     private static final String DELIMETER = " ";
 
@@ -18,8 +23,11 @@ public class StreamInput {
      * @see calculator.ParseArguments
      */
     public static void parseStream(BaseContext context) throws Exception {
+        logger.info("stream parsing started successfully: \n" + context);
+
         Scanner stream = new Scanner(System.in);
         String curStr = stream.nextLine();
+        logger.info("Current command with arguments: " + curStr);
         while (!Objects.equals(curStr, END_COMMAND)) {
             String[] arguments = curStr.split(DELIMETER);
 

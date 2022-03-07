@@ -9,16 +9,17 @@ import java.io.FileWriter;
 import java.io.IOException;
 
 import static calculator.Constants.FLOAT_DIFFERENCE;
+import static calculator.Constants.NO_ARGS;
 
 /**
  * Класс команды PRINT стэкового калькулятора, имплементирующий Worker
  * @see calculator.commands.Worker
  * @see StreamPrintCommand#execute(BaseContext, String[])
  */
-public class FilePrintCommand implements Worker{
-    private static final int ARGS_COUNT = 0;
-
+public class FilePrintCommand implements Worker {
     private static final Logger logger = LogManager.getLogger(FilePrintCommand.class);
+
+    private static final int ARGS_COUNT = 0;
 
     /**
      * Метод выводит в выходной файл верхний элемент стэка из context
@@ -35,7 +36,7 @@ public class FilePrintCommand implements Worker{
         double peekNum = context.peek();
         int intPeekNum = (int) peekNum;
 
-        try (FileWriter writer = new FileWriter(context.getFoutName(), true)) {
+        try (FileWriter writer = new FileWriter(context.getFout(), true)) {
             if (peekNum - intPeekNum == FLOAT_DIFFERENCE) {
                 writer.write(intPeekNum + "\n");
             }
@@ -44,7 +45,7 @@ public class FilePrintCommand implements Worker{
             }
         }
         catch (IOException ex) {
-            logger.error("Writer was opened unsuccessfully" + ex.getMessage());
+            logger.error("Writer was opened unsuccessfully: ", ex);
         }
     }
 }

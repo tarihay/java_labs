@@ -7,15 +7,17 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.EmptyStackException;
 
+import static calculator.Constants.NO_ARGS;
+
 /**
  * Класс команды Pop стэкового калькулятора, имплементирующий Worker
  * @see calculator.commands.Worker
  * @see calculator.commands.PopCommand#execute(BaseContext, String[])
  */
 public class PopCommand implements Worker {
-    private static final int ARGS_COUNT = 0;
-
     private static final Logger logger = LogManager.getLogger(PopCommand.class);
+
+    private static final int ARGS_COUNT = 0;
 
     /**
      * Метод удаляет верхний элемент стэка из context
@@ -32,7 +34,7 @@ public class PopCommand implements Worker {
             context.popDelete();
         }
         catch (EmptyStackException ex) {
-            logger.error(ex.getMessage());
+            logger.error("There is an empty stack: ", ex);
         }
     }
 }

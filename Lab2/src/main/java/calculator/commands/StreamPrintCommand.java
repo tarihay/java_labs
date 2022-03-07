@@ -14,10 +14,10 @@ import static calculator.Constants.FLOAT_DIFFERENCE;
  * @see calculator.commands.Worker
  * @see StreamPrintCommand#execute(BaseContext, String[])
  */
-public class StreamPrintCommand implements Worker{
-    private static final int ARGS_COUNT = 0;
-
+public class StreamPrintCommand implements Worker {
     private static final Logger logger = LogManager.getLogger(StreamPrintCommand.class);
+
+    private static final int ARGS_COUNT = 0;
 
     /**
      * Метод выводит в консоль верхний элемент стэка из context
@@ -42,7 +42,7 @@ public class StreamPrintCommand implements Worker{
             }
         }
         catch (EmptyStackException ex) {
-            logger.error(ex.getMessage());
+            logger.error("There is an empty stack: ", ex);
         }
     }
 }

@@ -1,6 +1,6 @@
 package calculator;
 
-import calculator.exceptions.*;
+
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

@@ -1,5 +1,9 @@
 package calculator;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.HashMap;
 import java.util.Stack;
 
@@ -10,7 +14,7 @@ public class BaseContext {
     private Stack<Double> stack;
     private HashMap<String, Double> defines;
     String finName;
-    String foutName;
+    File fout;
     String inputMethod;
 
     /**
@@ -29,9 +33,10 @@ public class BaseContext {
      * @param foutName Имя файла, в который нужно будет записывать результат
      * @param inputMethod указывает метод ввода данных, для выбора реализации обработки данных и вывода
      */
-    public BaseContext(String finName, String foutName, String inputMethod) {
+    public BaseContext(String finName, String foutName, String inputMethod) throws IOException {
         this.inputMethod = inputMethod;
-        this.foutName = foutName;
+        Files.deleteIfExists(Paths.get(foutName));
+        this.fout = new File(foutName);
         this.finName = finName;
         stack = new Stack<>();
         defines = new HashMap<>();
@@ -45,8 +50,8 @@ public class BaseContext {
         return finName;
     }
 
-    public String getFoutName() {
-        return foutName;
+    public File getFout() {
+        return fout;
     }
 
     public void push(double num) {
@@ -81,5 +86,15 @@ public class BaseContext {
 
     public boolean containsArg(String name) {
         return defines.containsKey(name);
+    }
+
+    @Override
+    public String toString() {
+        return "BaseContext{" +
+                "stack=" + stack +
+                ", defines=" + defines +
+                ", finName='" + finName + '\'' +
+                ", inputMethod='" + inputMethod + '\'' +
+                '}';
     }
 }

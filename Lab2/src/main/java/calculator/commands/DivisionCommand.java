@@ -9,17 +9,18 @@ import org.apache.logging.log4j.Logger;
 import java.util.EmptyStackException;
 
 import static calculator.Constants.DEFAULT;
+import static calculator.Constants.NO_ARGS;
 
 /**
  * Класс команды '/' стэкового калькулятора, имплементирующий Worker
  * @see calculator.commands.Worker
  * @see calculator.commands.DivisionCommand#execute(BaseContext, String[])
  */
-public class DivisionCommand implements Worker{
+public class DivisionCommand implements Worker {
+    private static final Logger logger = LogManager.getLogger(DivisionCommand.class);
+
     private static final int ARGS_COUNT = 0;
     private static final int ZERO = 0;
-
-    private static final Logger logger = LogManager.getLogger(DivisionCommand.class);
 
     /**
      * Метод реализует деление двух верхних элементов стэка. Результат возвращается на стэк
@@ -28,9 +29,9 @@ public class DivisionCommand implements Worker{
      * @see calculator.BaseContext
      */
     @Override
-    public void execute(BaseContext context, String[] arguments) throws Exception{
+    public void execute(BaseContext context, String[] arguments) throws Exception {
         if (arguments.length != ARGS_COUNT) {
-            throw new CommandArgsAmountException("Wrongs amount of parametres");
+            throw new CommandArgsAmountException("Wrongs amount of parameters");
         }
 
         double num1 = DEFAULT;
@@ -38,14 +39,13 @@ public class DivisionCommand implements Worker{
         try {
             num1 = context.popReturn();
             num2 = context.popReturn();
+            if (num1 == ZERO) {
+                throw new DivisionByZeroException("It could be division by zero. Be careful!");
+            }
+            context.push(num2 / num1);
         }
         catch (EmptyStackException ex) {
-            logger.error(ex.getMessage());
+            logger.error("There is an empty stack: ", ex);
         }
-
-        if (num1 == ZERO) {
-            throw new DivisionByZeroException("It could be division by zero. Be careful!");
-        }
-        context.push(num2 / num1);
     }
 }

@@ -8,6 +8,7 @@ import org.apache.logging.log4j.Logger;
 import java.util.EmptyStackException;
 
 import static calculator.Constants.DEFAULT;
+import static calculator.Constants.NO_ARGS;
 
 /**
  * Класс команды '-' стэкового калькулятора, имплементирующий Worker
@@ -15,9 +16,9 @@ import static calculator.Constants.DEFAULT;
  * @see calculator.commands.MinusCommand#execute(BaseContext, String[])
  */
 public class MinusCommand implements Worker {
-    private static final int ARGS_COUNT = 0;
-
     private static final Logger logger = LogManager.getLogger(MinusCommand.class);
+
+    private static final int ARGS_COUNT = 0;
 
     /**
      * Метод реализует вычитание двух верхних элементов стэка. Результат возвращается на стэк
@@ -35,11 +36,10 @@ public class MinusCommand implements Worker {
         try {
             num1 = context.popReturn();
             num2 = context.popReturn();
+            context.push(num2 - num1);
         }
         catch (EmptyStackException ex) {
-            logger.error(ex.getMessage());
+            logger.error("There is an empty stack: ", ex);
         }
-
-        context.push(num2 - num1);
     }
 }

@@ -6,6 +6,8 @@ import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
+import static calculator.Constants.NO_ARGS;
+
 /**
  * Класс с методом парсинга массива строк, вышедшего из FileTreatment или StreamInput. Зависит от метода ввода
  * @see calculator.ParseArguments#parseArgs(String[], BaseContext)
@@ -13,14 +15,13 @@ import java.util.Objects;
  * @see calculator.StreamInput
  */
 public class ParseArguments {
+    private static final Logger logger = LogManager.getLogger(ParseArguments.class);
+
     private static final int FIRST_ARG = 1;
     private static final int COMMAND_POS = 0;
     private static final int ARRAY_START = 0;
-    private static final int NO_ARGS = 0;
 
     private static final char COMMENT = '#';
-
-    private static final Logger logger = LogManager.getLogger(ParseArguments.class);
 
     /**
      * Метод обработки массива строк, вышедшего из вышедшего из FileTreatment или StreamInput. Зависит от метода ввода
@@ -36,7 +37,7 @@ public class ParseArguments {
             logger.error("No arguments given");
         }
         else {
-            logger.info("Run parseArgs with arguments");
+            logger.info("Run parseArgs with context: \n" + context);
         }
 
         final int LENGTH_WITHOUT_COMMAND = arguments.length - 1;

@@ -1,0 +1,16 @@
+2022-03-08 02:05:48,613 INFO c.Main [main] There are 2 args. Program starts with file input
+2022-03-08 02:05:48,632 INFO c.FileTreatment [main] method got the arguments to start parsing input file: 
+BaseContext{stack=[], defines={}, finName='workflow.txt', inputMethod='file'}
+2022-03-08 02:05:48,633 INFO c.FileTreatment [main] Current command with arguments: PUSH 5
+2022-03-08 02:05:48,639 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[], defines={}, finName='workflow.txt', inputMethod='file'}
+2022-03-08 02:05:48,640 INFO c.Factory [main] Factory successfully got the command: PUSH
+2022-03-08 02:05:48,648 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[5.0], defines={}, finName='workflow.txt', inputMethod='file'}
+2022-03-08 02:05:48,648 INFO c.Factory [main] Factory successfully got the command: PUSH
+2022-03-08 02:05:48,648 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[5.0, 5.0], defines={}, finName='workflow.txt', inputMethod='file'}
+2022-03-08 02:05:48,648 INFO c.Factory [main] Factory successfully got the command: +
+2022-03-08 02:05:48,654 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[10.0], defines={}, finName='workflow.txt', inputMethod='file'}
+2022-03-08 02:05:48,654 INFO c.Factory [main] Factory successfully got the command: PRINT

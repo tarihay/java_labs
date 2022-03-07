@@ -11,14 +11,14 @@
         </File>
     </Appenders>
     <Loggers>
-        <Logger name="myLog" level="fatal" additivity="false">
+        <Logger name="myLog" level="info" additivity="false">
             <AppenderRef ref="LogToFile"/>
             <AppenderRef ref="LogToConsole"/>
         </Logger>
         <Logger name="org.springframework.boot" level="error" additivity="false">
             <AppenderRef ref="LogToConsole"/>
         </Logger>
-        <Root level="fatal">
+        <Root level="info">
             <AppenderRef ref="LogToFile"/>
             <AppenderRef ref="LogToConsole"/>
         </Root>

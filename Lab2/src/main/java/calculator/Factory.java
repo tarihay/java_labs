@@ -12,13 +12,18 @@ import static calculator.Constants.FILE_METHOD;
  * Класс реализации Фабрики команд калькулятора
  */
 public class Factory {
+    private static final Logger logger = LogManager.getLogger(Factory.class);
 
     /**
      * Метод возвращает реализацию по указанной команде
      *
-     * @param command - имя команды
+     * @param context - объект класса, содержащий стэк, мапу и методы для работы с ними
+     * @param command - команда, которую нужно вызвать
+     * @return - возвращает экземпляр класса команды
+     * @see calculator.BaseContext
      */
     public static Worker createFactory(BaseContext context, String command) throws ClassNotFoundException {
+        logger.info("Factory successfully got the command: " + command);
         switch (command) {
             case "POP" -> {
                 return new PopCommand();

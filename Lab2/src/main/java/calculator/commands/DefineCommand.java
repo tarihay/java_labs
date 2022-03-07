@@ -6,9 +6,7 @@ import calculator.exceptions.CommandArgsAmountException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static calculator.Constants.FIRST_ARGUMENT;
-import static calculator.Constants.SECOND_ARGUMENT;
-import static calculator.Constants.DEFAULT;
+import static calculator.Constants.*;
 
 /**
  * Класс команды DEFINE стэкового калькулятора, имплементирующий Worker
@@ -16,9 +14,9 @@ import static calculator.Constants.DEFAULT;
  * @see calculator.commands.DefineCommand#execute(BaseContext, String[])
  */
 public class DefineCommand implements Worker {
-    private static final int ARGS_COUNT = 2;
-
     private static final Logger logger = LogManager.getLogger(DefineCommand.class);
+
+    private static final int ARGS_COUNT = 2;
 
     /**
      * Метод создает define в мапе со строкой-ключом и числом-значением
@@ -38,10 +36,10 @@ public class DefineCommand implements Worker {
 
         try {
             num = Double.parseDouble(value);
+            context.define(name, num);
         }
         catch (NumberFormatException ex) {
-            logger.error("Parsing failed" + ex.getMessage());
+            logger.error("Parsing failed: ", ex);
         }
-        context.define(name, num);
     }
 }

@@ -15,4 +15,6 @@ public final class Constants {
     public static final int OUTPUT_ARGUMENT = 1;
 
     public static final int FLOAT_DIFFERENCE = 0;
+
+    public static final int NO_ARGS = 0;
 }
