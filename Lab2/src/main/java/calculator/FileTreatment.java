@@ -1,5 +1,8 @@
 package calculator;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.*;
 
 /**
@@ -7,6 +10,8 @@ import java.io.*;
  */
 public class FileTreatment {
     private static final String DELIMETER = " ";
+
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     /**
      * Метод построчно считывает данные с файла и парсит их, разбивая на "команду" и ее аргументы
@@ -28,6 +33,7 @@ public class FileTreatment {
                 curStr = reader.readLine();
             }
         } catch (IOException ex) {
+            logger.error(ex);
             ex.printStackTrace();
         }
     }

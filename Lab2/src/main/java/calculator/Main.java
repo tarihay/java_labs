@@ -1,6 +1,8 @@
 package calculator;
 
 import calculator.exceptions.*;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import static calculator.Constants.FILE_METHOD;
 import static calculator.Constants.STREAM_METHOD;
@@ -11,10 +13,10 @@ public class Main {
     private static final int NO_ARGS = 0;
     private static final int IN_OUT_ARGS = 2;
 
-    //private static final Logger logger = LogManager.getLogger(Main.class);
+    private static final Logger logger = LogManager.getLogger(Main.class);
 
     public static void main(String[] args) throws Exception {
-        //logger.info("Bla Bla Bla");
+        logger.info("Bla Bla Bla");
         if (args.length == NO_ARGS) {
             BaseContext context = new BaseContext(STREAM_METHOD);
             StreamInput.parseStream(context);

@@ -71,14 +71,6 @@ public class BaseContext {
         return stack.peek();
     }
 
-    public Stack<Double> getStack() {
-        return stack;
-    }
-
-    public HashMap<String, Double> getDefines() {
-        return defines;
-    }
-
     public void define(String key, double value) {
         defines.put(key, value);
     }
