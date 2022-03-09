@@ -10,7 +10,7 @@ import static calculator.Constants.NO_ARGS;
 
 /**
  * Класс с методом парсинга массива строк, вышедшего из FileTreatment или StreamInput. Зависит от метода ввода
- * @see calculator.ParseArguments#parseArgs(String[], BaseContext)
+ * @see calculator.ParseArguments#parseArgs(String[], BaseContext, Factory)
  * @see calculator.FileTreatment
  * @see calculator.StreamInput
  */
@@ -32,7 +32,7 @@ public class ParseArguments {
      * @see calculator.StreamInput
      * @see calculator.BaseContext
      */
-    public static void parseArgs(String[] arguments, BaseContext context) throws Exception {
+    public static void parseArgs(String[] arguments, BaseContext context, Factory factory) throws Exception {
         if (arguments.length == NO_ARGS) {
             logger.error("No arguments given");
         }
@@ -48,8 +48,10 @@ public class ParseArguments {
         }
 
         if (!Objects.equals(command.charAt(COMMAND_POS), COMMENT)) {
-            Worker factory = Factory.createFactory(context, command);
-            factory.execute(context, additions);
+            Worker curCommand = factory.getCommand(command);
+            if (curCommand != null) {
+                curCommand.execute(context, additions);
+            }
         }
     }
 }

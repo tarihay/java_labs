@@ -4,8 +4,11 @@ import calculator.commands.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import java.util.Objects;
+import java.io.*;
+import java.util.HashMap;
+import java.util.regex.Pattern;
 
+import static calculator.Constants.DELIMETER;
 import static calculator.Constants.FILE_METHOD;
 
 /**
@@ -14,53 +17,56 @@ import static calculator.Constants.FILE_METHOD;
 public class Factory {
     private static final Logger logger = LogManager.getLogger(Factory.class);
 
+    private static final String COMMANDS_PATHS_TXT = "src/main/java/calculator/CommandsPaths.txt";
+
+    private static final int COMMAND_POS = 0;
+    private static final int CLASS_PATH_POS = 1;
+
+    private HashMap<String, Worker> commands = new HashMap<>();
+
     /**
-     * Метод возвращает реализацию по указанной команде
-     *
-     * @param context - объект класса, содержащий стэк, мапу и методы для работы с ними
-     * @param command - команда, которую нужно вызвать
-     * @return - возвращает экземпляр класса команды
-     * @see calculator.BaseContext
+     * Создание фабрики, которая парсит файл с лежащими в ней командами и путями, записывая все в мапу
      */
-    public static Worker createFactory(BaseContext context, String command) throws ClassNotFoundException {
-        logger.info("Factory successfully got the command: " + command);
-        switch (command) {
-            case "POP" -> {
-                return new PopCommand();
-            }
-            case "PUSH" -> {
-                return new PushCommand();
-            }
-            case "+" -> {
-                return new PlusCommand();
-            }
-            case "-" -> {
-                return new MinusCommand();
-            }
-            case "*" -> {
-                return new MultCommand();
-            }
-            case "/" -> {
-                return new DivisionCommand();
-            }
-            case "PRINT" -> {
-                String inputMethod = context.getInputMethod();
-                if (Objects.equals(inputMethod, FILE_METHOD)) {
-                    return new FilePrintCommand();
+    Factory() {
+        try {
+            BufferedReader reader = new BufferedReader(new FileReader(COMMANDS_PATHS_TXT));
+            String line = reader.readLine();
+            while (line != null) {
+                String[] arguments = line.split(DELIMETER);
+
+                Class<?> worker = Class.forName(arguments[CLASS_PATH_POS]);
+                if (!commands.containsKey(arguments[COMMAND_POS])) {
+                    commands.put(arguments[COMMAND_POS], (Worker) worker.newInstance());
                 }
                 else {
-                    return new StreamPrintCommand();
+                    logger.warn("Don't try to rewrite already written command");
                 }
+
+                line = reader.readLine();
             }
-            case "SQRT" -> {
-                return new SqrtCommand();
-            }
-            case "DEFINE" -> {
-                return new DefineCommand();
-            }
-            default -> {
-                throw new ClassNotFoundException("No such class found");
-            }
+        } catch (FileNotFoundException ex) {
+            logger.error("File " + COMMANDS_PATHS_TXT + " was not found. Check the path: ", ex);
+        } catch (IOException ex2) {
+            logger.error("There is an input problem: ", ex2);
+        } catch (ClassNotFoundException ex3) {
+            logger.error("No such class found: ", ex3);
+        } catch (IllegalAccessException | InstantiationException ex4) {
+            logger.error("Access Error", ex4);
+        }
+    }
+
+    /**
+     * Возвращает экземпляр класса из мапы данной команды
+     * @param command команда в String формате, которую нужно распознать
+     * @return Возвращает экземпляр класса команды, если таковой имеется в мапе
+     */
+    public Worker getCommand(String command) {
+        if (commands.containsKey(command)) {
+            return commands.get(command);
+        }
+        else {
+            logger.error("No such command found");
+            return null;
         }
     }
 }

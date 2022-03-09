@@ -5,13 +5,13 @@ import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 
+import static calculator.Constants.DELIMETER;
+
 /**
  * Класс обработки данных входного файла
  */
 public class FileTreatment {
     private static final Logger logger = LogManager.getLogger(FileTreatment.class);
-
-    private static final String DELIMETER = " ";
 
     /**
      * Метод построчно считывает данные с файла и парсит их, разбивая на "команду" и ее аргументы
@@ -22,6 +22,9 @@ public class FileTreatment {
      */
     public static void parseFile(BaseContext context) throws Exception {
         logger.info("method got the arguments to start parsing input file: \n" + context);
+
+        Factory factory = new Factory();
+
         File fin = new File(context.getFinName());
         try {
             BufferedReader reader = new BufferedReader(new FileReader(fin));
@@ -35,7 +38,7 @@ public class FileTreatment {
             while (curStr != null) {
                 String[] arguments = curStr.split(DELIMETER);
 
-                ParseArguments.parseArgs(arguments, context);
+                ParseArguments.parseArgs(arguments, context, factory);
 
                 curStr = reader.readLine();
             }

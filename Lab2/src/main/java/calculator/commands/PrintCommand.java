@@ -5,17 +5,21 @@ import calculator.exceptions.CommandArgsAmountException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
+import java.io.FileWriter;
+import java.io.IOException;
 import java.util.EmptyStackException;
+import java.util.Objects;
 
+import static calculator.Constants.FILE_METHOD;
 import static calculator.Constants.FLOAT_DIFFERENCE;
 
 /**
  * Класс команды PRINT стэкового калькулятора, имплементирующий Worker
  * @see calculator.commands.Worker
- * @see StreamPrintCommand#execute(BaseContext, String[])
+ * @see PrintCommand#execute(BaseContext, String[])
  */
-public class StreamPrintCommand implements Worker {
-    private static final Logger logger = LogManager.getLogger(StreamPrintCommand.class);
+public class PrintCommand implements Worker {
+    private static final Logger logger = LogManager.getLogger(PrintCommand.class);
 
     private static final int ARGS_COUNT = 0;
 
@@ -34,11 +38,27 @@ public class StreamPrintCommand implements Worker {
         try {
             double peekNum = context.peek();
             int intPeekNum = (int) peekNum;
-            if (peekNum - intPeekNum == FLOAT_DIFFERENCE) {
-                System.out.println(intPeekNum);
+
+            if (Objects.equals(context.getInputMethod(), FILE_METHOD)) {
+                try (FileWriter writer = new FileWriter(context.getFout(), true)) {
+                    if (peekNum - intPeekNum == FLOAT_DIFFERENCE) {
+                        writer.write(intPeekNum + "\n");
+                    }
+                    else {
+                        writer.write(peekNum + "\n");
+                    }
+                }
+                catch (IOException ex) {
+                    logger.error("Writer was opened unsuccessfully: ", ex);
+                }
             }
             else {
-                System.out.println(peekNum);
+                if (peekNum - intPeekNum == FLOAT_DIFFERENCE) {
+                    System.out.println(intPeekNum);
+                }
+                else {
+                    System.out.println(peekNum);
+                }
             }
         }
         catch (EmptyStackException ex) {

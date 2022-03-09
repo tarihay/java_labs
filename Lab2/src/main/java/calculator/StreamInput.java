@@ -25,13 +25,15 @@ public class StreamInput {
     public static void parseStream(BaseContext context) throws Exception {
         logger.info("stream parsing started successfully: \n" + context);
 
+        Factory factory = new Factory();
+
         Scanner stream = new Scanner(System.in);
         String curStr = stream.nextLine();
         logger.info("Current command with arguments: " + curStr);
         while (!Objects.equals(curStr, END_COMMAND)) {
             String[] arguments = curStr.split(DELIMETER);
 
-            ParseArguments.parseArgs(arguments, context);
+            ParseArguments.parseArgs(arguments, context, factory);
 
             curStr = stream.nextLine();
         }
