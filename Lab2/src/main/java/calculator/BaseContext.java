@@ -13,9 +13,9 @@ import java.util.Stack;
 public class BaseContext {
     private Stack<Double> stack;
     private HashMap<String, Double> defines;
-    String finName;
-    File fout;
-    String inputMethod;
+    private String finName;
+    private File fout;
+    private String inputMethod;
 
     /**
      * Конструктор класса, предназначенный для работы с потоком с консоли
