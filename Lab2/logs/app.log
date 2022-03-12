@@ -1,16 +1,26 @@
-2022-03-08 02:05:48,613 INFO c.Main [main] There are 2 args. Program starts with file input
-2022-03-08 02:05:48,632 INFO c.FileTreatment [main] method got the arguments to start parsing input file: 
-BaseContext{stack=[], defines={}, finName='workflow.txt', inputMethod='file'}
-2022-03-08 02:05:48,633 INFO c.FileTreatment [main] Current command with arguments: PUSH 5
-2022-03-08 02:05:48,639 INFO c.ParseArguments [main] Run parseArgs with context: 
-BaseContext{stack=[], defines={}, finName='workflow.txt', inputMethod='file'}
-2022-03-08 02:05:48,640 INFO c.Factory [main] Factory successfully got the command: PUSH
-2022-03-08 02:05:48,648 INFO c.ParseArguments [main] Run parseArgs with context: 
-BaseContext{stack=[5.0], defines={}, finName='workflow.txt', inputMethod='file'}
-2022-03-08 02:05:48,648 INFO c.Factory [main] Factory successfully got the command: PUSH
-2022-03-08 02:05:48,648 INFO c.ParseArguments [main] Run parseArgs with context: 
-BaseContext{stack=[5.0, 5.0], defines={}, finName='workflow.txt', inputMethod='file'}
-2022-03-08 02:05:48,648 INFO c.Factory [main] Factory successfully got the command: +
-2022-03-08 02:05:48,654 INFO c.ParseArguments [main] Run parseArgs with context: 
-BaseContext{stack=[10.0], defines={}, finName='workflow.txt', inputMethod='file'}
-2022-03-08 02:05:48,654 INFO c.Factory [main] Factory successfully got the command: PRINT
+2022-03-10 01:07:49,775 INFO c.Main [main] There are no args. Program starts with console input
+2022-03-10 01:07:49,789 INFO c.StreamInput [main] stream parsing started successfully: 
+BaseContext{stack=[], defines={}, finName='null', inputMethod='stream'}
+2022-03-10 01:07:53,450 INFO c.StreamInput [main] Current command with arguments: PUSH 5
+2022-03-10 01:07:53,451 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[], defines={}, finName='null', inputMethod='stream'}
+2022-03-10 01:07:56,068 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[5.0], defines={}, finName='null', inputMethod='stream'}
+2022-03-10 01:08:09,558 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[5.0], defines={}, finName='null', inputMethod='stream'}
+2022-03-10 01:08:11,379 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[5.0, 2.0], defines={}, finName='null', inputMethod='stream'}
+2022-03-10 01:08:12,782 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[7.0], defines={}, finName='null', inputMethod='stream'}
+2022-03-10 01:08:15,333 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[7.0], defines={}, finName='null', inputMethod='stream'}
+2022-03-10 01:08:17,333 INFO c.ParseArguments [main] Run parseArgs with context: 
+BaseContext{stack=[], defines={}, finName='null', inputMethod='stream'}
+2022-03-10 01:08:17,333 ERROR c.c.PrintCommand [main] There is an empty stack: 
+java.util.EmptyStackException: null
+	at java.util.Stack.peek(Stack.java:101) ~[?:?]
+	at calculator.BaseContext.peek(BaseContext.java:76) ~[classes/:?]
+	at calculator.commands.PrintCommand.execute(PrintCommand.java:39) [classes/:?]
+	at calculator.ParseArguments.parseArgs(ParseArguments.java:53) [classes/:?]
+	at calculator.StreamInput.parseStream(StreamInput.java:36) [classes/:?]
+	at calculator.Main.main(Main.java:22) [classes/:?]
