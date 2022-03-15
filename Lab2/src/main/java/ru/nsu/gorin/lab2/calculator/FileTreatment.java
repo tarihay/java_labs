@@ -1,11 +1,11 @@
-package calculator;
+package ru.nsu.gorin.lab2.calculator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 
-import static calculator.Constants.DELIMETER;
+import static ru.nsu.gorin.lab2.calculator.Constants.DELIMETER;
 
 /**
  * Класс обработки данных входного файла
@@ -17,11 +17,11 @@ public class FileTreatment {
      * Метод построчно считывает данные с файла и парсит их, разбивая на "команду" и ее аргументы
      * Вызывает метод parseArgs класса ParseArguments для разделения команды и аргументов (если имеются)
      * @param context Экземпляр класса BaseContext, в котором хранятся стэк, мапа и методы для работы с ними
-     * @see calculator.BaseContext
-     * @see calculator.ParseArguments
+     * @see BaseContext
+     * @see ParseArguments
      */
     public static void parseFile(BaseContext context) throws Exception {
-        logger.info("method got the arguments to start parsing input file: \n" + context);
+        logger.info("method got the arguments to start parsing input file: " + context);
 
         Factory factory = new Factory();
 

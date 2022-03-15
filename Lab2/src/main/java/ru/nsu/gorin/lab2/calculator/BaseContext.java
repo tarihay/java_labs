@@ -1,4 +1,4 @@
-package calculator;
+package ru.nsu.gorin.lab2.calculator;
 
 import java.io.File;
 import java.io.IOException;
@@ -11,11 +11,11 @@ import java.util.Stack;
  * Класс контекст, содержащий в себе стэк калькулятора, мапу и все методы для работы с ними
  */
 public class BaseContext {
-    private Stack<Double> stack;
-    private HashMap<String, Double> defines;
+    private final Stack<Double> stack;
+    private final HashMap<String, Double> defines;
     private String finName;
     private File fout;
-    private String inputMethod;
+    private final String inputMethod;
 
     /**
      * Конструктор класса, предназначенный для работы с потоком с консоли

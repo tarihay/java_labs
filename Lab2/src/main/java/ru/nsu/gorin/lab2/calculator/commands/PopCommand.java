@@ -1,18 +1,16 @@
-package calculator.commands;
+package ru.nsu.gorin.lab2.calculator.commands;
 
-import calculator.BaseContext;
-import calculator.exceptions.CommandArgsAmountException;
+import ru.nsu.gorin.lab2.calculator.BaseContext;
+import ru.nsu.gorin.lab2.calculator.exceptions.CommandArgsAmountException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.EmptyStackException;
 
-import static calculator.Constants.NO_ARGS;
-
 /**
  * Класс команды Pop стэкового калькулятора, имплементирующий Worker
- * @see calculator.commands.Worker
- * @see calculator.commands.PopCommand#execute(BaseContext, String[])
+ * @see Worker
+ * @see PopCommand#execute(BaseContext, String[])
  */
 public class PopCommand implements Worker {
     private static final Logger logger = LogManager.getLogger(PopCommand.class);
@@ -23,7 +21,7 @@ public class PopCommand implements Worker {
      * Метод удаляет верхний элемент стэка из context
      * @param context объект класса, содержащий стэк, мапу и методы для работы с ними
      * @param arguments аргументы, передающиеся для команды
-     * @see calculator.BaseContext
+     * @see BaseContext
      */
     @Override
     public void execute(BaseContext context, String[] arguments) throws Exception {

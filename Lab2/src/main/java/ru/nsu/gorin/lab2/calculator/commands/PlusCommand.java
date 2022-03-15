@@ -1,30 +1,28 @@
-package calculator.commands;
+package ru.nsu.gorin.lab2.calculator.commands;
 
-import calculator.BaseContext;
-import calculator.exceptions.CommandArgsAmountException;
+import ru.nsu.gorin.lab2.calculator.BaseContext;
+import ru.nsu.gorin.lab2.calculator.exceptions.CommandArgsAmountException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.EmptyStackException;
-
-import static calculator.Constants.DEFAULT;
-import static calculator.Constants.NO_ARGS;
+import static ru.nsu.gorin.lab2.calculator.Constants.DEFAULT;
 
 /**
- * Класс команды '*' стэкового калькулятора, имплементирующий Worker
- * @see calculator.commands.Worker
- * @see calculator.commands.MultCommand#execute(BaseContext, String[])
+ * Класс команды '+' стэкового калькулятора, имплементирующий Worker
+ * @see Worker
+ * @see PlusCommand#execute(BaseContext, String[])
  */
-public class MultCommand implements Worker {
-    private static final Logger logger = LogManager.getLogger(MultCommand.class);
+public class PlusCommand implements Worker {
+    private static final Logger logger = LogManager.getLogger(PlusCommand.class);
 
     private static final int ARGS_COUNT = 0;
 
     /**
-     * Метод реализует перемножение двух верхних элементов стэка. Результат возвращается на стэк
+     * Метод реализует сложение двух верхних элементов стэка. Результат возвращается на стэк
      * @param context объект класса, содержащий стэк, мапу и методы для работы с ними
      * @param arguments аргументы, передающиеся для команды
-     * @see calculator.BaseContext
+     * @see BaseContext
      */
     @Override
     public void execute(BaseContext context, String[] arguments) throws Exception {
@@ -36,7 +34,7 @@ public class MultCommand implements Worker {
         try {
             num1 = context.popReturn();
             num2 = context.popReturn();
-            context.push(num1 * num2);
+            context.push(num1 + num2);
         }
         catch (EmptyStackException ex) {
             logger.error("There is an empty stack: ", ex);

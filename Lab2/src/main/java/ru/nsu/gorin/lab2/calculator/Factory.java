@@ -1,15 +1,14 @@
-package calculator;
+package ru.nsu.gorin.lab2.calculator;
 
-import calculator.commands.*;
+import ru.nsu.gorin.lab2.calculator.commands.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.nsu.gorin.lab2.calculator.commands.Worker;
 
 import java.io.*;
 import java.util.HashMap;
-import java.util.regex.Pattern;
 
-import static calculator.Constants.DELIMETER;
-import static calculator.Constants.FILE_METHOD;
+import static ru.nsu.gorin.lab2.calculator.Constants.DELIMETER;
 
 /**
  * Класс реализации Фабрики команд калькулятора
@@ -17,12 +16,12 @@ import static calculator.Constants.FILE_METHOD;
 public class Factory {
     private static final Logger logger = LogManager.getLogger(Factory.class);
 
-    private static final String COMMANDS_PATHS_TXT = "src/main/java/calculator/CommandsPaths.txt";
+    private static final String COMMANDS_PATHS_TXT = "src/main/java/ru/nsu/gorin/lab2/calculator/CommandsPaths.txt";
 
     private static final int COMMAND_POS = 0;
     private static final int CLASS_PATH_POS = 1;
 
-    private HashMap<String, Worker> commands = new HashMap<>();
+    private final HashMap<String, Worker> commands = new HashMap<>();
 
     /**
      * Создание фабрики, которая парсит файл с лежащими в ней командами и путями, записывая все в мапу

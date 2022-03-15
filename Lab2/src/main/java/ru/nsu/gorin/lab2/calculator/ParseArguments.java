@@ -1,18 +1,18 @@
-package calculator;
+package ru.nsu.gorin.lab2.calculator;
 
-import calculator.commands.Worker;
+import ru.nsu.gorin.lab2.calculator.commands.Worker;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.util.Objects;
 
-import static calculator.Constants.NO_ARGS;
+import static ru.nsu.gorin.lab2.calculator.Constants.NO_ARGS;
 
 /**
  * Класс с методом парсинга массива строк, вышедшего из FileTreatment или StreamInput. Зависит от метода ввода
- * @see calculator.ParseArguments#parseArgs(String[], BaseContext, Factory)
- * @see calculator.FileTreatment
- * @see calculator.StreamInput
+ * @see ParseArguments#parseArgs(String[], BaseContext, Factory)
+ * @see FileTreatment
+ * @see StreamInput
  */
 public class ParseArguments {
     private static final Logger logger = LogManager.getLogger(ParseArguments.class);
@@ -28,9 +28,9 @@ public class ParseArguments {
      * Метод выделяет строку с командой и строку с аргументами, если таковые имеются
      * @param arguments массив строк, содержащий команду и аргументы (если имеются)
      * @param context Экземпляр класса BaseContext, в котором хранятся стэк, мапа и методы для работы с ними
-     * @see calculator.FileTreatment
-     * @see calculator.StreamInput
-     * @see calculator.BaseContext
+     * @see FileTreatment
+     * @see StreamInput
+     * @see BaseContext
      */
     public static void parseArgs(String[] arguments, BaseContext context, Factory factory) throws Exception {
         if (arguments.length == NO_ARGS) {

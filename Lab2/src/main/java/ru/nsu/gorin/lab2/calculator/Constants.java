@@ -1,4 +1,4 @@
-package calculator;
+package ru.nsu.gorin.lab2.calculator;
 
 /**
  * Класс констант

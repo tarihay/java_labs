@@ -1,12 +1,13 @@
 package calculator;
 
-import calculator.commands.PushCommand;
-import calculator.commands.Worker;
+import ru.nsu.gorin.lab2.calculator.BaseContext;
+import ru.nsu.gorin.lab2.calculator.commands.PushCommand;
+import ru.nsu.gorin.lab2.calculator.commands.Worker;
 import org.junit.internal.runners.JUnit38ClassRunner;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
 
-import static calculator.Constants.STREAM_METHOD;
+import static ru.nsu.gorin.lab2.calculator.Constants.STREAM_METHOD;
 import static org.junit.jupiter.api.Assertions.*;
 
 @RunWith(JUnit38ClassRunner.class)

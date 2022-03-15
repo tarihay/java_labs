@@ -1,16 +1,16 @@
-package calculator.commands;
+package ru.nsu.gorin.lab2.calculator.commands;
 
-import calculator.BaseContext;
-import calculator.exceptions.CommandArgsAmountException;
+import ru.nsu.gorin.lab2.calculator.BaseContext;
+import ru.nsu.gorin.lab2.calculator.exceptions.CommandArgsAmountException;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static calculator.Constants.*;
+import static ru.nsu.gorin.lab2.calculator.Constants.*;
 
 /**
  * Класс команды PUSH стэкового калькулятора, имплементирующий Worker
- * @see calculator.commands.Worker
- * @see calculator.commands.PushCommand#execute(BaseContext, String[])
+ * @see Worker
+ * @see PushCommand#execute(BaseContext, String[])
  */
 public class PushCommand implements Worker {
     private static final Logger logger = LogManager.getLogger(PushCommand.class);
@@ -21,7 +21,7 @@ public class PushCommand implements Worker {
      * Метод кладет аргумент команды на стэк в context
      * @param context объект класса, содержащий стэк, мапу и методы для работы с ними
      * @param arguments аргументы, передающиеся для команды
-     * @see calculator.BaseContext
+     * @see BaseContext
      */
     @Override
     public void execute(BaseContext context, String[] arguments) throws Exception {

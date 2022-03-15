@@ -1,13 +1,13 @@
-package calculator;
+package ru.nsu.gorin.lab2.calculator;
 
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
-import static calculator.Constants.FILE_METHOD;
-import static calculator.Constants.STREAM_METHOD;
-import static calculator.Constants.INPUT_ARGUMENT;
-import static calculator.Constants.OUTPUT_ARGUMENT;
+import static ru.nsu.gorin.lab2.calculator.Constants.FILE_METHOD;
+import static ru.nsu.gorin.lab2.calculator.Constants.STREAM_METHOD;
+import static ru.nsu.gorin.lab2.calculator.Constants.INPUT_ARGUMENT;
+import static ru.nsu.gorin.lab2.calculator.Constants.OUTPUT_ARGUMENT;
 
 public class Main {
     private static final int NO_ARGS = 0;

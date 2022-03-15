@@ -1,6 +1,6 @@
-package calculator.commands;
+package ru.nsu.gorin.lab2.calculator.commands;
 
-import calculator.BaseContext;
+import ru.nsu.gorin.lab2.calculator.BaseContext;
 
 /**
  * Интерфейс, от которого имплементируются блоки

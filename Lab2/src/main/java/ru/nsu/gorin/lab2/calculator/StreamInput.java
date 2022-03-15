@@ -1,4 +1,4 @@
-package calculator;
+package ru.nsu.gorin.lab2.calculator;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
@@ -19,8 +19,8 @@ public class StreamInput {
      * Метод построчно считывает данные с потока с консоли и парсит их, разбивая на "команду" и ее аргументы
      * Вызывает метод parseArgs класса ParseArguments для разделения команды и аргументов (если имеются)
      * @param context Экземпляр класса BaseContext, в котором хранятся стэк, мапа и методы для работы с ними
-     * @see calculator.BaseContext
-     * @see calculator.ParseArguments
+     * @see BaseContext
+     * @see ParseArguments
      */
     public static void parseStream(BaseContext context) throws Exception {
         logger.info("stream parsing started successfully: \n" + context);
