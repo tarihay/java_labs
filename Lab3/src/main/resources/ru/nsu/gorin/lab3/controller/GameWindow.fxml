@@ -606,7 +606,7 @@
                         <Font name="System Bold" size="17.0" />
                      </font>
                   </Label>
-                  <Label alignment="CENTER" prefWidth="70.0" style="-fx-border-color: #000000;" text="00:00">
+                  <Label fx:id="timerLabel" alignment="CENTER" prefWidth="70.0" style="-fx-border-color: #000000;" text="00:00">
                      <font>
                         <Font name="System Bold" size="18.0" />
                      </font></Label>

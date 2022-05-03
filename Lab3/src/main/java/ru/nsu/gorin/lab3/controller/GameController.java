@@ -18,6 +18,7 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 import ru.nsu.gorin.lab3.model.Field;
+import ru.nsu.gorin.lab3.model.Timer;
 
 import java.io.IOException;
 
@@ -32,6 +33,9 @@ public class GameController {
     private Field field;
     private int flagCount;
     private int hitMinesCount = 0;
+
+    private Timer timer;
+    private Thread timerThread;
 
     @FXML
     private Label flagNum;
@@ -87,6 +91,9 @@ public class GameController {
     private Text winText;
     @FXML
     private Text loseText;
+
+    @FXML
+    private Label timerLabel;
 
     @FXML
     void initialize() {
@@ -161,6 +168,9 @@ public class GameController {
 
             winStatus = false;
             defeatStatus = false;
+
+            timerLabel = new Label();
+            timeSetter();
         });
     }
 
@@ -226,6 +236,12 @@ public class GameController {
                 }
             }
         }
+    }
+
+    private void timeSetter() {
+        timer = new Timer();
+        timerThread = new Thread(timer, "timer");
+        timerThread.start();
     }
 
     private void showMainMenu() {
@@ -389,6 +405,8 @@ public class GameController {
 
     private void showVictory() {
         winText.setVisible(true);
+        timer.setWorkingStatus(false);
+        timerThread.interrupt();
 
         winStatus = true;
     }
@@ -396,9 +414,13 @@ public class GameController {
     private void showDefeat() {
         loseText.setVisible(true);
         showAllMines();
+        timer.setWorkingStatus(false);
+        timerThread.interrupt();
 
         defeatStatus = true;
     }
+
+
     private void showAllMines() {
         Image image = new Image(this.getClass().getResourceAsStream(MINE_PATH));
         for (int i = 0; i < field.getHeight(); i++) {
