@@ -1,4 +1,4 @@
-package ru.nsu.gorin.lab3.controller;
+package ru.nsu.gorin.lab3.controllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -6,9 +6,7 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
-import javafx.scene.control.CheckBox;
 import javafx.scene.control.Label;
-import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.input.MouseButton;
@@ -16,26 +14,36 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
-import javafx.stage.Window;
 import ru.nsu.gorin.lab3.model.Field;
-import ru.nsu.gorin.lab3.model.Timer;
+import ru.nsu.gorin.lab3.model.TemplateTimer;
 
+import java.io.File;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.util.concurrent.Exchanger;
 
 import static ru.nsu.gorin.lab3.Constants.*;
 import static ru.nsu.gorin.lab3.Constants.FLAG_PATH;
 
-public class GameController {
-    boolean defeatStatus;
-    boolean winStatus;
-    private boolean isNumCorrect = true;
+public class GameWindowController {
+    private static final String AGAIN_TEXT = "Again";
+
+    boolean defeatStatus = false;
+    boolean winStatus = false;
+
+    private int fieldX;
+    private int fieldY;
+    private int mineCount;
+    private String nickName;
 
     private Field field;
-    private int flagCount;
+    private Integer flagCount;
     private int hitMinesCount = 0;
 
-    private Timer timer;
-    private Thread timerThread;
+    private TemplateTimer templateTimer;
+    private Exchanger<String> exchanger;
+
+    private String time;
 
     @FXML
     private Label flagNum;
@@ -46,46 +54,12 @@ public class GameController {
     private BorderPane borderPane;
 
     @FXML
-    private Label nameLabel;
-    @FXML
-    private Label nickLabel;
-
-    @FXML
     private Button backButton;
     @FXML
-    private Button backButton1;
-
-    @FXML
-    private HBox hBoxCustom;
-
-    @FXML
-    private CheckBox customBox;
-
-    @FXML
-    private CheckBox easyBox;
-
-    @FXML
-    private CheckBox hardBox;
-
-    @FXML
-    private TextField heightField;
-    @FXML
-    private TextField widthField;
-
-    @FXML
-    private TextField minesField;
-
-    @FXML
-    private TextField nickField;
-
-    @FXML
-    private CheckBox normalBox;
+    private Button menuButton;
 
     @FXML
     private GridPane fieldPane;
-
-    @FXML
-    private Button playButton;
 
     @FXML
     private Text winText;
@@ -96,121 +70,46 @@ public class GameController {
     private Label timerLabel;
 
     @FXML
-    void initialize() {
+    public void initialize() {
         backButton.setOnAction(event -> {
-            showMainMenu();
+            Stage stage = (Stage) backButton.getScene().getWindow();
+            stage.close();
+            templateTimer.shutdown();
+
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXML_GAME_PREPARING_WINDOW_NAME));
+            Parent rootNode = null;
+            try {
+                rootNode = fxmlLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+            stage = new Stage();
+            Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);
+            stage.setTitle(GAME_NAME);
+            stage.getIcons().add(new Image(this.getClass().getResourceAsStream(ICON_PATH)));
+            stage.setScene(scene);
+            stage.show();
         });
 
-        backButton1.setOnAction(event -> {
-            showMainMenu();
-        });
+        menuButton.setOnAction(event -> {
+            Stage stage = (Stage) menuButton.getScene().getWindow();
+            stage.close();
 
-        playButton.setOnAction(event -> {
-            int fieldY = 0;
-            int fieldX = 0;
-            int mineCount = 0;
-            if (easyBox.isSelected()) {
-                fieldY = BEGINNER_FIELD_SIZE;
-                fieldX = BEGINNER_FIELD_SIZE;
-                mineCount = BEGINNER_MINES_AMOUNT;
+            FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXML_MENU_NAME));
+            Parent rootNode = null;
+            try {
+                rootNode = fxmlLoader.load();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
-            if (normalBox.isSelected()) {
-                fieldY = INTERMEDIATE_FIELD_SIZE;
-                fieldX = INTERMEDIATE_FIELD_SIZE;
-                mineCount = INTERMEDIATE_MINES_AMOUNT;
-            }
-            if (hardBox.isSelected()) {
-                fieldY = PROFESSIONAL_FIELD_Y;
-                fieldX = PROFESSIONAL_FIELD_X;
-                mineCount = PROFESSIONAL_MINES_AMOUNT;
-            }
-
-            if (customBox.isSelected()) {
-                try {
-                    fieldY = Integer.parseInt(heightField.getText());
-                }
-                catch (Exception ex) {
-                    isNumCorrect = false;
-                }
-                try {
-                    fieldX = Integer.parseInt(widthField.getText());
-                }
-                catch (Exception ex) {
-                    isNumCorrect = false;
-                }
-                try {
-                    mineCount = Integer.parseInt(minesField.getText());
-                }
-                catch (Exception ex) {
-                    isNumCorrect = false;
-                }
-            }
-
-            if (isNumCorrect) {
-                field = new Field(fieldY, fieldX, mineCount);
-            }
-
-            if (nickField.getText().isEmpty()) {
-                nickNameLabel.setText("Nick");
-            }
-            else {
-                nickNameLabel.setText(nickField.getText());
-            }
-
-            flagCount = mineCount;
-            flagNum.setText(Integer.toString(flagCount));
-
-            changeRowsColumnsAmount(fieldY, fieldX);
-
-            showGameWindow();
-            fieldPane.setHgap(-1);
-            fieldPane.setVgap(-1);
-
-            winStatus = false;
-            defeatStatus = false;
-
-            timerLabel = new Label();
-            timeSetter();
+            stage = new Stage();
+            Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);
+            stage.setTitle(GAME_NAME);
+            stage.getIcons().add(new Image(this.getClass().getResourceAsStream(ICON_PATH)));
+            stage.setScene(scene);
+            stage.show();
         });
     }
-
-    public void handleEasyBox() {
-        if (easyBox.isSelected()) {
-            normalBox.setSelected(false);
-            hardBox.setSelected(false);
-            customBox.setSelected(false);
-
-            hBoxCustom.setVisible(false);
-        }
-    }
-    public void handleNormalBox() {
-        if (normalBox.isSelected()) {
-            easyBox.setSelected(false);
-            hardBox.setSelected(false);
-            customBox.setSelected(false);
-
-            hBoxCustom.setVisible(false);
-        }
-    }
-    public void handleHardBox() {
-        if (hardBox.isSelected()) {
-            easyBox.setSelected(false);
-            normalBox.setSelected(false);
-            customBox.setSelected(false);
-
-            hBoxCustom.setVisible(false);
-        }
-    }
-    public void handleCustomBox() {
-        if (customBox.isSelected()) {
-            easyBox.setSelected(false);
-            normalBox.setSelected(false);
-            hardBox.setSelected(false);
-
-            hBoxCustom.setVisible(true);
-        }
-    }
-
 
     @FXML
     public void paneClickHandler(MouseEvent event) {
@@ -233,73 +132,53 @@ public class GameController {
                     if (flagCount > 0) {
                         setFlag(row, column);
                     }
+                    else if (flagCount == 0) {
+                        if (field.getValue(row, column) >= FLAG_VALUE) {
+                            Image image = new Image(this.getClass().getResourceAsStream(BLOCK_PATH));
+                            fieldPane.add(new ImageView(image), row, column);
+                            flagCount++;
+                            flagNum.setText(Integer.toString(flagCount));
+
+                            field.removeFlag(row, column);
+                        }
+                    }
                 }
             }
         }
     }
 
-    private void timeSetter() {
-        timer = new Timer();
-        timerThread = new Thread(timer, "timer");
-        timerThread.start();
+    public void setTimer(TemplateTimer templateTimer) {
+        this.templateTimer = templateTimer;
     }
 
-    private void showMainMenu() {
-        Stage stage = (Stage) backButton.getScene().getWindow();
-        stage.close();
-        FXMLLoader fxmlLoader = new FXMLLoader(getClass().getResource(FXML_MENU_NAME_FROM_CONTROLLER));
-        Parent root = null;
-        try {
-            root = fxmlLoader.load();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-        stage = new Stage();
-        stage.setTitle(GAME_NAME);
-        stage.setScene(new Scene(root));
-        stage.show();
+    public void setTimerLabel(String time) {
+        timerLabel.setText(time);
     }
 
-    private void showGameWindow() {
-        hBoxCustom.setVisible(false);
-        customBox.setVisible(false);
-        easyBox.setVisible(false);
-        hardBox.setVisible(false);
-        heightField.setVisible(false);
-        widthField.setVisible(false);
-        minesField.setVisible(false);
-        nickField.setVisible(false);
-        normalBox.setVisible(false);
-        nameLabel.setVisible(false);
-        playButton.setVisible(false);
-        backButton.setVisible(false);
-        nickLabel.setVisible(false);
+    public void fillTheField(int fieldY, int fieldX, int mineCount, String nickName,
+                             double heightDifference, double widthDifference) {
+        this.fieldY = fieldY;
+        this.fieldX = fieldX;
+        this.mineCount = mineCount;
+        this.nickName = nickName;
 
+        nickNameLabel.setText(nickName);
 
-        borderPane.setVisible(true);
+        flagCount = mineCount;
+        flagNum.setText(flagCount.toString());
+
+        field = new Field(fieldY, fieldX, mineCount);
+
+        changeRowsColumnsAmount(heightDifference, widthDifference);
     }
 
-    private void changeRowsColumnsAmount(int fieldY, int fieldX) {
-        Window window = borderPane.getScene().getWindow();
-
-        double windowHeight = window.getHeight();
-        double windowWidth = window.getWidth();
-        double heightDifference = windowHeight - (fieldY * BLOCK_HEIGHT + FIELD_HEIGHT_OFFSET);
-        double widthDifference = windowWidth - (fieldX * BLOCK_WIDTH + FIELD_WIDTH_OFFSET);
-
-        boolean isHeightDifferenceNegative = heightDifference < 0;
-        if (isHeightDifferenceNegative) {
-            window.setHeight(windowHeight + Math.abs(heightDifference) + LITTLE_FIELD_HEIGHT_OFFSET);
+    private void changeRowsColumnsAmount(double heightDifference, double widthDifference) {
+        if (heightDifference < 0) {
             borderPane.setPrefHeight(borderPane.getPrefHeight() + Math.abs(heightDifference) + LITTLE_FIELD_HEIGHT_OFFSET);
         }
-
-        boolean isWidthDifferenceNegative = widthDifference < 0;
-        if (isWidthDifferenceNegative) {
-            window.setWidth(windowWidth + Math.abs(widthDifference) + LITTLE_FIELD_WIDTH_OFFSET);
+        if (widthDifference < 0) {
             borderPane.setPrefWidth(borderPane.getPrefWidth() + Math.abs(widthDifference) + LITTLE_FIELD_WIDTH_OFFSET);
         }
-        window.centerOnScreen();
-
 
         fieldPane.getChildren().clear();
         for (int x = 0; x < fieldX; x++) {
@@ -310,6 +189,9 @@ public class GameController {
                 fieldPane.add(image, x, y);
             }
         }
+
+        fieldPane.setHgap(-1);
+        fieldPane.setVgap(-1);
     }
 
     private void openTheCell(int x, int y) {
@@ -405,8 +287,10 @@ public class GameController {
 
     private void showVictory() {
         winText.setVisible(true);
-        timer.setWorkingStatus(false);
-        timerThread.interrupt();
+        templateTimer.shutdown();
+        writeResults();
+
+        endGameChanges();
 
         winStatus = true;
     }
@@ -414,8 +298,9 @@ public class GameController {
     private void showDefeat() {
         loseText.setVisible(true);
         showAllMines();
-        timer.setWorkingStatus(false);
-        timerThread.interrupt();
+        templateTimer.shutdown();
+
+        endGameChanges();
 
         defeatStatus = true;
     }
@@ -423,13 +308,45 @@ public class GameController {
 
     private void showAllMines() {
         Image image = new Image(this.getClass().getResourceAsStream(MINE_PATH));
-        for (int i = 0; i < field.getHeight(); i++) {
-            for (int j = 0; j < field.getWidth(); j++) {
+        for (int i = 0; i < field.getWidth(); i++) {
+            for (int j = 0; j < field.getHeight(); j++) {
                 int fieldValue = field.getValue(i, j);
                 if (fieldValue >= MINE && fieldValue < FLAG_VALUE) {
                     fieldPane.add(new ImageView(image), i, j);
                 }
             }
+        }
+    }
+
+    private void endGameChanges() {
+        backButton.setText(AGAIN_TEXT);
+        menuButton.setVisible(true);
+    }
+
+    private void writeResults() {
+        boolean isEasy = fieldY == EASY_FIELD_SIZE && fieldX == EASY_FIELD_SIZE && mineCount == EASY_MINES_AMOUNT;
+        boolean isMedium = fieldY == MEDIUM_FIELD_SIZE && fieldX == MEDIUM_FIELD_SIZE && mineCount == MEDIUM_MINES_AMOUNT;
+        boolean isHard = fieldY == HARD_FIELD_Y && fieldX == HARD_FIELD_X && mineCount == HARD_MINES_AMOUNT;
+
+        File fout;
+        if (isEasy) {
+            fout = new File(EASY_RESULTS_PATH);
+        }
+        else if (isMedium) {
+            fout = new File(MEDIUM_RESULTS_PATH);
+        }
+        else if (isHard) {
+            fout = new File(HARD_RESULTS_PATH);
+        }
+        else {
+            return;
+        }
+
+        try (FileWriter writer = new FileWriter(fout, false)) {
+            String currentResult = timerLabel.getText() + " " + nickName + "\n";
+            writer.write(currentResult);
+        } catch (IOException e) {
+            e.printStackTrace();
         }
     }
 }
