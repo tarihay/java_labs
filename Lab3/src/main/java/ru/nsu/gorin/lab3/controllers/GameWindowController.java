@@ -14,22 +14,33 @@ import javafx.scene.input.MouseEvent;
 import javafx.scene.layout.*;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.nsu.gorin.lab3.model.Field;
 import ru.nsu.gorin.lab3.model.TemplateTimer;
 
-import java.io.File;
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.concurrent.Exchanger;
+import java.io.*;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.stream.Collectors;
 
 import static ru.nsu.gorin.lab3.Constants.*;
 import static ru.nsu.gorin.lab3.Constants.FLAG_PATH;
 
+/**
+ * Класс-контроллер окна игры
+ * Открывается после нажатия на кнопку "PLAY" в окне подготовки к игре
+ * @see GamePrepWindowController
+ */
 public class GameWindowController {
+    private static final Logger logger = LogManager.getLogger(GameWindowController.class);
+
     private static final String AGAIN_TEXT = "Again";
 
     boolean defeatStatus = false;
     boolean winStatus = false;
+
+    boolean isFirstMove = true;
 
     private int fieldX;
     private int fieldY;
@@ -41,9 +52,6 @@ public class GameWindowController {
     private int hitMinesCount = 0;
 
     private TemplateTimer templateTimer;
-    private Exchanger<String> exchanger;
-
-    private String time;
 
     @FXML
     private Label flagNum;
@@ -69,6 +77,9 @@ public class GameWindowController {
     @FXML
     private Label timerLabel;
 
+    /**
+     * Метод устанавливает действие при нажатии на конкретную кнопку
+     */
     @FXML
     public void initialize() {
         backButton.setOnAction(event -> {
@@ -81,7 +92,7 @@ public class GameWindowController {
             try {
                 rootNode = fxmlLoader.load();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
             stage = new Stage();
             Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);
@@ -100,7 +111,7 @@ public class GameWindowController {
             try {
                 rootNode = fxmlLoader.load();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
             stage = new Stage();
             Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);
@@ -111,6 +122,10 @@ public class GameWindowController {
         });
     }
 
+    /**
+     * Метод регистрирует нажатие по игровому полю
+     * @param event хранит в себе информацию о нажатии
+     */
     @FXML
     public void paneClickHandler(MouseEvent event) {
         if (!winStatus && !defeatStatus) {
@@ -123,6 +138,7 @@ public class GameWindowController {
                     getParent().getClass().getName().equals("javafx.scene.layout.BorderPane")) {
                 int row = (int) ((event.getPickResult().getIntersectedNode().getLayoutX()  + xOffset) / ACTUAL_BLOCK_WIDTH);
                 int column = (int) ((event.getPickResult().getIntersectedNode().getLayoutY() + yOffset) / ACTUAL_BLOCK_HEIGHT);
+                logger.info("Click on cell (" + row + "," + column + ") handled");
 
 
                 if (event.getButton() == MouseButton.PRIMARY) {
@@ -151,10 +167,26 @@ public class GameWindowController {
         this.templateTimer = templateTimer;
     }
 
+    /**
+     * Метод устанавливает время в Label, которое в данный момент на таймере
+     * @param time время, которое ставит TimerListener
+     * @see ru.nsu.gorin.lab3.model.TimerListener
+     */
     public void setTimerLabel(String time) {
         timerLabel.setText(time);
     }
 
+    /**
+     * Метод заполняет всю информацию о поле, собранную в окне подготовки к игре
+     * @param fieldY размер поля по оси Y
+     * @param fieldX размер поля по оси X
+     * @param mineCount количество мин
+     * @param nickName ник игрока
+     * @param heightDifference на сколько новое окно отличается по высоте от стандартного
+     * @param widthDifference на сколько новое окно отличается по ширине от стандартного
+     *
+     * @see GamePrepWindowController
+     */
     public void fillTheField(int fieldY, int fieldX, int mineCount, String nickName,
                              double heightDifference, double widthDifference) {
         this.fieldY = fieldY;
@@ -172,6 +204,11 @@ public class GameWindowController {
         changeRowsColumnsAmount(heightDifference, widthDifference);
     }
 
+    /**
+     * Метод изменяет стандартное поле 9X9 на новое
+     * @param heightDifference на сколько новое окно отличается по высоте от стандартного
+     * @param widthDifference на сколько новое окно отличается по ширине от стандартного
+     */
     private void changeRowsColumnsAmount(double heightDifference, double widthDifference) {
         if (heightDifference < 0) {
             borderPane.setPrefHeight(borderPane.getPrefHeight() + Math.abs(heightDifference) + LITTLE_FIELD_HEIGHT_OFFSET);
@@ -192,45 +229,169 @@ public class GameWindowController {
 
         fieldPane.setHgap(-1);
         fieldPane.setVgap(-1);
+
+        logger.info("Field was completely changed");
     }
 
+    /**
+     * Метод открывает ячейку поля
+     * @param x координата ячейки по оси X
+     * @param y координата ячейки по оси Y
+     */
     private void openTheCell(int x, int y) {
         if (field.getValue(x, y) == NON_ACTIVE) {
+            logger.info("Cell was already clicked");
             return;
         }
         int fieldValue = field.getValue(x, y);
-        field.setNonActive(x, y);
         Image image = new Image(this.getClass().getResourceAsStream(FIELD_BLOCK_PATH));
         if (fieldValue > NOTHING && fieldValue < MINE) {
             setCorrectImage(fieldValue, x, y);
+            field.setNonActive(x, y);
+
+            if(isFirstMove) {
+                isFirstMove = false;
+                openTheCellsByConditionIfNotAMine(x, y);
+            }
         }
         else if (fieldValue == NOTHING){
             fieldPane.add(new ImageView(image), x, y);
-            boolean isNotLeftBorder = x != 0;
-            if (isNotLeftBorder) {
-                openTheCell(x-1, y);
+            field.setNonActive(x, y);
+            if (isFirstMove) {
+                isFirstMove = false;
+                openTheCellsByConditionIfNotAMine(x, y);
             }
-            boolean isNotRightBorder = x != (field.getWidth() - 1);
-            if (isNotRightBorder) {
-                openTheCell(x+1, y);
-            }
-            boolean isNotUpperBorder = y != 0;
-            if (isNotUpperBorder) {
-                openTheCell(x, y-1);
-            }
-            boolean isNotLowerBorder = y != (field.getHeight() - 1);
-            if (isNotLowerBorder) {
-                openTheCell(x, y+1);
+            else {
+                openTheCellsByCondition(x, y);
             }
         }
         else if (fieldValue >= MINE){
-            image = new Image(this.getClass().getResourceAsStream(HITMINE_PATH));
-            fieldPane.add(new ImageView(image), x, y);
+            if (isFirstMove) {
+                isFirstMove = false;
+                field.changeOneMinePosition(x, y);
+                openTheCell(x, y);
+                openTheCellsByConditionIfNotAMine(x, y);
+            }
+            else {
+                image = new Image(this.getClass().getResourceAsStream(HITMINE_PATH));
+                fieldPane.add(new ImageView(image), x, y);
+                field.setNonActive(x, y);
 
-            showDefeat();
+                showDefeat();
+            }
         }
     }
 
+    /**
+     * Рекурсивно открывает ячейки поля
+     * Вызывает новую ветку рекурсии в методе openTheCell
+     *
+     * @param x координата ячейки по оси X
+     * @param y координата ячейки по оси Y
+     */
+    private void openTheCellsByCondition(int x, int y) {
+        boolean isNotLeftBorder = x != 0;
+        if (isNotLeftBorder) {
+            openTheCell(x-1, y);
+        }
+        boolean isNotRightBorder = x != (field.getWidth() - 1);
+        if (isNotRightBorder) {
+            openTheCell(x+1, y);
+        }
+        boolean isNotUpperBorder = y != 0;
+        if (isNotUpperBorder) {
+            openTheCell(x, y-1);
+        }
+        boolean isNotLowerBorder = y != (field.getHeight() - 1);
+        if (isNotLowerBorder) {
+            openTheCell(x, y+1);
+        }
+
+        if (isNotLeftBorder && isNotUpperBorder) {
+            openTheCell(x-1, y-1);
+        }
+        if (isNotLeftBorder && isNotLowerBorder) {
+            openTheCell(x-1, y+1);
+        }
+        if (isNotRightBorder && isNotUpperBorder) {
+            openTheCell(x+1, y-1);
+        }
+        if (isNotRightBorder && isNotLowerBorder) {
+            openTheCell(x+1, y+1);
+        }
+    }
+
+    /**
+     * Рекурсивно открывает ячейки поля в зависимости от того, есть в ячейке мина или нет
+     * Вызывает новую ветку рекурсии в методе openTheCell
+     * Вызывается только при первом ходе
+     *
+     * @param x координата ячейки по оси X
+     * @param y координата ячейки по оси Y
+     */
+    private void openTheCellsByConditionIfNotAMine(int x, int y) {
+        int value;
+        boolean isNotLeftBorder = x != 0;
+        if (isNotLeftBorder) {
+            value = field.getValue(x-1, y);
+            if (value < BORDER_VALUE) {
+                openTheCell(x-1, y);
+            }
+        }
+        boolean isNotRightBorder = x != (field.getWidth() - 1);
+        if (isNotRightBorder) {
+            value = field.getValue(x+1, y);
+            if (value < BORDER_VALUE) {
+                openTheCell(x+1, y);
+            }
+        }
+        boolean isNotUpperBorder = y != 0;
+        if (isNotUpperBorder) {
+            value = field.getValue(x, y-1);
+            if (value < BORDER_VALUE) {
+                openTheCell(x, y-1);
+            }
+        }
+        boolean isNotLowerBorder = y != (field.getHeight() - 1);
+        if (isNotLowerBorder) {
+            value = field.getValue(x, y+1);
+            if (value < BORDER_VALUE) {
+                openTheCell(x, y+1);
+            }
+        }
+
+        if (isNotLeftBorder && isNotUpperBorder) {
+            value = field.getValue(x-1, y-1);
+            if (value < BORDER_VALUE) {
+                openTheCell(x-1, y-1);
+            }
+        }
+        if (isNotLeftBorder && isNotLowerBorder) {
+            value = field.getValue(x-1, y+1);
+            if (value < BORDER_VALUE) {
+                openTheCell(x-1, y+1);
+            }
+        }
+        if (isNotRightBorder && isNotUpperBorder) {
+            value = field.getValue(x+1, y-1);
+            if (value < BORDER_VALUE) {
+                openTheCell(x+1, y-1);
+            }
+        }
+        if (isNotRightBorder && isNotLowerBorder) {
+            value = field.getValue(x+1, y+1);
+            if (value < BORDER_VALUE) {
+                openTheCell(x+1, y+1);
+            }
+        }
+    }
+
+    /**
+     * Метод устанавливает необходимую картинку в зависимости от того, какое значение стоит в поле
+     * @param fieldValue значение поля
+     * @param x координата ячейки по оси X
+     * @param y координата ячейки по оси Y
+     */
     private void setCorrectImage(int fieldValue, int x, int y) {
         Image image = new Image(this.getClass().getResourceAsStream(NUMBER_ONE_PATH));
         if (fieldValue == TWO_VALUE) {
@@ -257,8 +418,14 @@ public class GameWindowController {
         fieldPane.add(new ImageView(image), x, y);
     }
 
+    /**
+     * Метод устанавливает флаг в нужную ячейку
+     * @param x координата ячейки по оси X
+     * @param y координата ячейки по оси Y
+     */
     private void setFlag(int x, int y) {
         if (field.getValue(x, y) == NON_ACTIVE) {
+            logger.info("Cell was already clicked");
             return;
         }
         if (field.getValue(x, y) >= FLAG_VALUE) {
@@ -285,7 +452,12 @@ public class GameWindowController {
         }
     }
 
+    /**
+     * Метод заканчивает игру победой
+     */
     private void showVictory() {
+        logger.info("Player " + nickName + " won the game");
+
         winText.setVisible(true);
         templateTimer.shutdown();
         writeResults();
@@ -295,7 +467,12 @@ public class GameWindowController {
         winStatus = true;
     }
 
+    /**
+     * Метод заканчивает игру поражением
+     */
     private void showDefeat() {
+        logger.info("Player " + nickName + " lost");
+
         loseText.setVisible(true);
         showAllMines();
         templateTimer.shutdown();
@@ -306,6 +483,10 @@ public class GameWindowController {
     }
 
 
+    /**
+     * Метод показывает все оставшиеся неоткрытые мины
+     * Вызывается в методе showDefeat()
+     */
     private void showAllMines() {
         Image image = new Image(this.getClass().getResourceAsStream(MINE_PATH));
         for (int i = 0; i < field.getWidth(); i++) {
@@ -323,30 +504,67 @@ public class GameWindowController {
         menuButton.setVisible(true);
     }
 
+    /**
+     * Метод записывает результаты в случае победы
+     * Вызывается в методе showVictory()
+     */
     private void writeResults() {
         boolean isEasy = fieldY == EASY_FIELD_SIZE && fieldX == EASY_FIELD_SIZE && mineCount == EASY_MINES_AMOUNT;
         boolean isMedium = fieldY == MEDIUM_FIELD_SIZE && fieldX == MEDIUM_FIELD_SIZE && mineCount == MEDIUM_MINES_AMOUNT;
         boolean isHard = fieldY == HARD_FIELD_Y && fieldX == HARD_FIELD_X && mineCount == HARD_MINES_AMOUNT;
 
-        File fout;
+        File file;
+        String currentResult = timerLabel.getText() + " " + nickName;
         if (isEasy) {
-            fout = new File(EASY_RESULTS_PATH);
+            file = new File(EASY_RESULTS_PATH);
         }
         else if (isMedium) {
-            fout = new File(MEDIUM_RESULTS_PATH);
+            file = new File(MEDIUM_RESULTS_PATH);
         }
         else if (isHard) {
-            fout = new File(HARD_RESULTS_PATH);
+            file = new File(HARD_RESULTS_PATH);
         }
         else {
             return;
         }
 
-        try (FileWriter writer = new FileWriter(fout, false)) {
-            String currentResult = timerLabel.getText() + " " + nickName + "\n";
-            writer.write(currentResult);
+        List<String> list = changeTopPlaces(file, currentResult);
+
+        try (FileWriter writer = new FileWriter(file, false)) {
+            int i = 0;
+            for (String iterator : list) {
+                writer.write(iterator + "\n");
+                i++;
+                if (i > PLACES_AMOUNT) {
+                    break;
+                }
+            }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
         }
+    }
+
+    /**
+     * Метод записывает в список все значения из файла и добавляет к ним текущий результат
+     * @param file файл считывания
+     * @param currentResult текущий результат
+     * @return возвращает получившийся лист
+     */
+    private List<String> changeTopPlaces(File file, String currentResult) {
+        List<String> list = new LinkedList<>();
+        try {
+            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
+            String line = bufferedReader.readLine();
+            while (line != null) {
+                list.add(line);
+                line = bufferedReader.readLine();
+            }
+        } catch (IOException e) {
+            logger.error(e);
+        }
+
+        list.add(currentResult);
+        list = list.stream().sorted().collect(Collectors.toList());
+        return list;
     }
 }

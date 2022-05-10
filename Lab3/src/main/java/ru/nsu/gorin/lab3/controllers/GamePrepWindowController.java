@@ -10,27 +10,36 @@ import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.HBox;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.stage.WindowEvent;
+
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.nsu.gorin.lab3.model.TemplateTimer;
 import ru.nsu.gorin.lab3.model.TimerListener;
 
 import java.io.IOException;
-import java.util.concurrent.Exchanger;
 
 import static ru.nsu.gorin.lab3.Constants.*;
 
+/**
+ * Класс-контроллер окна подготовки к игре
+ * Вызывается после нажатия кнопки "PLAY" в меню игры
+ * @see MenuWindowController
+ */
 public class GamePrepWindowController {
+    private static final Logger logger = LogManager.getLogger(GamePrepWindowController.class);
+
     private final static String STANDARD_NAME = "Nick";
 
-    @FXML private AnchorPane gameWindow;
     @FXML private GameWindowController gameWindowController;
 
-    @FXML private MenuWindowController menu;
 
-    private boolean isNumCorrect = true;
+    private boolean isYNumCorrect = true;
+    private boolean isXNumCorrect = true;
+    private boolean isMineNumCorrect = true;
 
     private int fieldX;
     private int fieldY;
@@ -66,6 +75,12 @@ public class GamePrepWindowController {
     private Button backButton;
 
     @FXML
+    private Text checkCorrectnessText;
+
+    /**
+     * Метод устанавливает действие при нажатии на конкретную кнопку
+     */
+    @FXML
     public void initialize() {
         backButton.setOnAction(event -> {
             Stage stage = (Stage) backButton.getScene().getWindow();
@@ -76,7 +91,7 @@ public class GamePrepWindowController {
             try {
                 rootNode = fxmlLoader.load();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
             stage = new Stage();
             Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);
@@ -108,20 +123,42 @@ public class GamePrepWindowController {
                     fieldY = Integer.parseInt(heightField.getText());
                 }
                 catch (Exception ex) {
-                    isNumCorrect = false;
+                    isYNumCorrect = false;
+                    logger.warn("Check fieldY correctness");
                 }
                 try {
                     fieldX = Integer.parseInt(widthField.getText());
                 }
                 catch (Exception ex) {
-                    isNumCorrect = false;
+                    isXNumCorrect = false;
+                    logger.warn("Check fieldX correctness");
                 }
                 try {
                     mineCount = Integer.parseInt(minesField.getText());
                 }
                 catch (Exception ex) {
-                    isNumCorrect = false;
+                    isMineNumCorrect = false;
+                    logger.warn("Check mineCount correctness");
                 }
+            }
+
+            if (fieldY > HEIGHT_MAX || fieldY < HEIGHT_MIN) {
+                isYNumCorrect = false;
+            }
+            else {
+                isYNumCorrect = true;
+            }
+            if (fieldX > WIDTH_MAX || fieldX < WIDTH_MIN) {
+                isXNumCorrect = false;
+            }
+            else {
+                isXNumCorrect = true;
+            }
+            if (mineCount > MINE_MAX || mineCount < MINE_MIN) {
+                isMineNumCorrect = false;
+            }
+            else {
+                isMineNumCorrect = true;
             }
 
             if (nickField.getText().isEmpty()) {
@@ -131,8 +168,7 @@ public class GamePrepWindowController {
                 nick = nickField.getText();
             }
 
-            //TODO сделать подсвечивание красным в области, где были введены неверные данные
-            if (isNumCorrect) {
+            if (isYNumCorrect && isXNumCorrect && isMineNumCorrect) {
                 Stage stage = (Stage) playButton.getScene().getWindow();
                 stage.close();
 
@@ -141,7 +177,7 @@ public class GamePrepWindowController {
                 try {
                     rootNode = fxmlLoader.load();
                 } catch (IOException e) {
-                    e.printStackTrace();
+                    logger.error(e);
                 }
                 stage = new Stage();
 
@@ -186,13 +222,20 @@ public class GamePrepWindowController {
                     @Override
                     public void handle(WindowEvent windowEvent) {
                         templateTimer.shutdown();
+                        logger.info("Timer was completely shutdowned");
                     }
                 });
                 stage.show();
             }
+            else {
+                checkCorrectnessText.setVisible(true);
+            }
         });
     }
 
+    /**
+     * Хэндлер нажатия на кнопку "easy"
+     */
     public void handleEasyBox() {
         if (easyBox.isSelected()) {
             normalBox.setSelected(false);
@@ -202,6 +245,9 @@ public class GamePrepWindowController {
             hBoxCustom.setVisible(false);
         }
     }
+    /**
+     * Хэндлер нажатия на кнопку "normal" (он же medium)
+     */
     public void handleNormalBox() {
         if (normalBox.isSelected()) {
             easyBox.setSelected(false);
@@ -211,6 +257,9 @@ public class GamePrepWindowController {
             hBoxCustom.setVisible(false);
         }
     }
+    /**
+     * Хэндлер нажатия на кнопку "hard"
+     */
     public void handleHardBox() {
         if (hardBox.isSelected()) {
             easyBox.setSelected(false);
@@ -220,6 +269,9 @@ public class GamePrepWindowController {
             hBoxCustom.setVisible(false);
         }
     }
+    /**
+     * Хэндлер нажатия на кнопку "custom"
+     */
     public void handleCustomBox() {
         if (customBox.isSelected()) {
             easyBox.setSelected(false);
@@ -228,15 +280,5 @@ public class GamePrepWindowController {
 
             hBoxCustom.setVisible(true);
         }
-    }
-
-    private void changeTime(Exchanger<String> exchanger) throws InterruptedException {
-        String result = new String();
-        try {
-            result = exchanger.exchange(result);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
-        gameWindowController.setTimerLabel(result);
     }
 }

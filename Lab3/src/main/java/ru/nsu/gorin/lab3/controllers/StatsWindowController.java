@@ -7,15 +7,27 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.image.Image;
 import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 import static ru.nsu.gorin.lab3.Constants.*;
 
+/**
+ * Класс-контроллер окна статистики
+ * Открывается после нажатия на кнопку "STATS" в меню игры
+ * @see MenuWindowController
+ */
 public class StatsWindowController {
+    private static final Logger logger = LogManager.getLogger(StatsWindowController.class);
+
     @FXML
     private Button backButton;
 
+    /**
+     * Метод устанавливает действие при нажатии на конкретную кнопку
+     */
     @FXML
     void initialize() {
         backButton.setOnAction(event -> {
@@ -27,7 +39,7 @@ public class StatsWindowController {
             try {
                 rootNode = fxmlLoader.load();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
             stage = new Stage();
             Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);

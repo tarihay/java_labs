@@ -1,20 +1,20 @@
 package ru.nsu.gorin.lab3.controllers.tabsControllers;
 
 import javafx.fxml.FXML;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.image.Image;
 import javafx.scene.text.Text;
-import javafx.stage.Stage;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.*;
 import java.util.*;
 
 import static ru.nsu.gorin.lab3.Constants.*;
 
+/**
+ * Класс-контроллер MediumStatsTab.fxml файла
+ */
 public class MediumStatsController {
+    private static final Logger logger = LogManager.getLogger(MediumStatsController.class);
 
     @FXML
     private Text firstPlaceText;
@@ -32,79 +32,43 @@ public class MediumStatsController {
     private Text seventhPlaceText;
 
     @FXML
-    void initialize() {
+    void initialize() throws IOException {
         fillThePlaces();
     }
 
-    public void fillThePlaces() {
+    /**
+     * Метод заполняет поля вкладки данными из файла easyStatsResults.txt
+     */
+    public void fillThePlaces() throws IOException {
         File fin = new File(MEDIUM_RESULTS_PATH);
-        Map<Integer, String> stringValueMap = new TreeMap<>();
+        List<String> list = new ArrayList<>();
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fin));
             String line = bufferedReader.readLine();
             while (line != null) {
-                int spacePos = getSpacePos(line);
-                String time = line.substring(0, spacePos);
-                int timeValue = convertStringToSecs(time);
-
-                stringValueMap.put(timeValue, line);
-
+                list.add(line);
                 line = bufferedReader.readLine();
             }
         } catch (IOException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw new IOException();
         }
 
         int i = 0;
-        for (Map.Entry<Integer, String> it : stringValueMap.entrySet()) {
-            modifyRightLabel(i, it.getValue());
+        for (String iterator : list) {
+            modifyRightLabel(i, iterator);
             i++;
-        }
-    }
-
-    private int convertStringToSecs(String stringTime) {
-        int colonPos = NOT_OK_STATUS;
-        for (int i = 0; i < stringTime.length(); i++) {
-            if (stringTime.charAt(i) == TIME_DELIMITER) {
-                colonPos = i;
-            }
-        }
-
-        String minutesString;
-        String secondsString;
-        if (colonPos != NOT_OK_STATUS) {
-            minutesString = stringTime.substring(0, colonPos);
-            secondsString = stringTime.substring(colonPos + 1, stringTime.length() - 1);
-        }
-        else {
-            return NOT_OK_STATUS;
-        }
-
-        int minutes = 0;
-        int seconds = 0;
-        try {
-            minutes = Integer.parseInt(minutesString);
-            seconds = Integer.parseInt(secondsString);
-        }
-        catch (Exception ex) {
-            ex.printStackTrace();
-        }
-
-        return (minutes*SECONDS_IN_MINUTE + seconds);
-    }
-
-    private int getSpacePos(String string) {
-        int spacePos = NOT_OK_STATUS;
-        for (int i = 0; i < string.length(); i++) {
-            if (string.charAt(i) == SPACE) {
-                spacePos = i;
+            if (i > PLACES_AMOUNT) {
                 break;
             }
         }
-
-        return spacePos;
     }
 
+    /**
+     * Метод вставляет данные в нужный Text-Label
+     * @param position позиция, на которой стоит конкретное значение
+     * @param string данные для вставки
+     */
     private void modifyRightLabel(int position, String string) {
         if (position == 0) {
             firstPlaceText.setText(string);

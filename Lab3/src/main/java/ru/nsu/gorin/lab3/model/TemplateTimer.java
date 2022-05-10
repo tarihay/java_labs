@@ -1,5 +1,8 @@
 package ru.nsu.gorin.lab3.model;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -7,7 +10,17 @@ import java.util.concurrent.Executors;
 
 import static ru.nsu.gorin.lab3.Constants.SEC_IN_MILLIS;
 
+/**
+ * Класс таймера для игры
+ * Создается в контроллере окна подготовки к игре отдельным потоком
+ * Необходим в окне игры
+ *
+ * @see ru.nsu.gorin.lab3.controllers.GamePrepWindowController
+ * @see ru.nsu.gorin.lab3.controllers.GameWindowController
+ */
 public class TemplateTimer {
+    private static final Logger logger = LogManager.getLogger(TemplateTimer.class);
+
     private static final int FIRST_TWO_DIGIT_NUM = 10;
     private static final int SECONDS_BORDER = 59;
     private static final String TIMER_DELIMITER = ":";
@@ -21,17 +34,21 @@ public class TemplateTimer {
     private final ExecutorService service = Executors.newCachedThreadPool();
     private List<TimerListener> listenersList= new ArrayList<>();
 
+    /**
+     * Конструктор запускает сервис с таймером
+     */
     public TemplateTimer() {
-
+        logger.info("Starting ExecutorService");
         service.submit(new Runnable() {
             @Override
             public void run() {
+
                 while (workingStatus) {
                     try {
                         Thread.sleep(SEC_IN_MILLIS);
                     }
-                    catch (Exception exception)  {
-                        exception.printStackTrace();
+                    catch (Exception e)  {
+                        logger.error(e);
                     }
 
                     changeValues();
@@ -51,11 +68,18 @@ public class TemplateTimer {
         return result;
     }
 
+    /**
+     * Метод завершает работу таймера
+     */
     public void shutdown() {
+        logger.info("Shutdown requested");
         workingStatus = false;
         service.shutdown();
     }
 
+    /**
+     * Метод увеличивает секунды и преобразует их во время формата MM:SS
+     */
     private void changeValues() {
         if (seconds + 1 > SECONDS_BORDER) {
             minutes++;

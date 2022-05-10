@@ -34,6 +34,13 @@ public class Constants {
     public static final int MEDIUM_MINES_AMOUNT = 40;
     public static final int HARD_MINES_AMOUNT = 99;
 
+    public static final int HEIGHT_MAX = 24;
+    public static final int WIDTH_MAX = 30;
+    public static final int MINE_MAX = 111;
+    public static final int HEIGHT_MIN = 9;
+    public static final int WIDTH_MIN = 9;
+    public static final int MINE_MIN = 10;
+
     public static final int BLOCK_HEIGHT = 25;
     public static final double ACTUAL_BLOCK_HEIGHT = 24;
     public static final int BLOCK_WIDTH = 25;
@@ -81,6 +88,7 @@ public class Constants {
     public static final int SIX_VALUE = 6;
     public static final int SEVEN_VALUE = 7;
     public static final int EIGHT_VALUE = 8;
+    public static final int BORDER_VALUE = 9;
     public static final int FLAG_VALUE = 100;
     public static final int MINE = 50;
     public static final int FLAG_ON_MINE_VALUE = FLAG_VALUE + MINE;

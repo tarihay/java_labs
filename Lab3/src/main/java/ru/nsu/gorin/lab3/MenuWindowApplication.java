@@ -9,7 +9,11 @@ import javafx.stage.Stage;
 
 import static ru.nsu.gorin.lab3.Constants.*;
 
+/**
+ * Основной класс приложения
+ */
 public class MenuWindowApplication extends Application {
+
     private Parent rootNode;
 
     @Override
@@ -19,7 +23,7 @@ public class MenuWindowApplication extends Application {
     }
 
     @Override
-    public void start(Stage stage) throws Exception {
+    public void start(Stage stage) {
         Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);
         stage.setTitle(GAME_NAME);
         stage.getIcons().add(new Image(this.getClass().getResourceAsStream(ICON_PATH)));

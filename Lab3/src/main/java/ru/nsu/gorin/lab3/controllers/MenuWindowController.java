@@ -5,21 +5,23 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.image.Image;
-import javafx.scene.layout.AnchorPane;
 import javafx.stage.Stage;
 
 import javafx.scene.control.Button;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
 
 import static ru.nsu.gorin.lab3.Constants.*;
 
+/**
+ * Класс-контроллер окна Меню
+ * Открывается после запуска приложения
+ * @see ru.nsu.gorin.lab3.MenuWindowApplication
+ */
 public class MenuWindowController {
-    @FXML private AnchorPane aboutWindow;
-    @FXML private AnchorPane gamePrepWindow;
-
-    @FXML private GamePrepWindowController gamePrepWindowController;
-    @FXML private AboutWindowController aboutWindowController;
+    private static final Logger logger = LogManager.getLogger(MenuWindowController.class);
 
     @FXML
     private Button exitButton;
@@ -33,6 +35,9 @@ public class MenuWindowController {
     @FXML
     private Button statsButton;
 
+    /**
+     * Метод устанавливает действие при нажатии на конкретную кнопку
+     */
     @FXML private void initialize() {
         faqButton.setOnAction(event -> {
             Stage stage = (Stage) faqButton.getScene().getWindow();
@@ -43,7 +48,7 @@ public class MenuWindowController {
             try {
                 rootNode = fxmlLoader.load();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
             stage = new Stage();
             Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);
@@ -62,7 +67,7 @@ public class MenuWindowController {
             try {
                 rootNode = fxmlLoader.load();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
             stage = new Stage();
             Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);
@@ -75,6 +80,8 @@ public class MenuWindowController {
         exitButton.setOnAction(event -> {
             Stage stage = (Stage) exitButton.getScene().getWindow();
             stage.close();
+
+            logger.info("Game was closed");
         });
 
         statsButton.setOnAction(event -> {
@@ -86,7 +93,7 @@ public class MenuWindowController {
             try {
                 rootNode = fxmlLoader.load();
             } catch (IOException e) {
-                e.printStackTrace();
+                logger.error(e);
             }
             stage = new Stage();
             Scene scene = new Scene(rootNode, MENU_WINDOW_WIDTH, MENU_WINDOW_HEIGHT);
