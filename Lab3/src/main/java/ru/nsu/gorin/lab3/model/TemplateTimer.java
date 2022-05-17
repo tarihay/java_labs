@@ -2,6 +2,8 @@ package ru.nsu.gorin.lab3.model;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.nsu.gorin.lab3.viewControllers.GamePrepWindowController;
+import ru.nsu.gorin.lab3.viewControllers.GameWindowController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,8 +17,8 @@ import static ru.nsu.gorin.lab3.Constants.SEC_IN_MILLIS;
  * Создается в контроллере окна подготовки к игре отдельным потоком
  * Необходим в окне игры
  *
- * @see ru.nsu.gorin.lab3.controllers.GamePrepWindowController
- * @see ru.nsu.gorin.lab3.controllers.GameWindowController
+ * @see GamePrepWindowController
+ * @see GameWindowController
  */
 public class TemplateTimer {
     private static final Logger logger = LogManager.getLogger(TemplateTimer.class);

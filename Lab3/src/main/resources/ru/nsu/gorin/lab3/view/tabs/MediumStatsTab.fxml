@@ -10,7 +10,7 @@
             prefWidth="768.0"
             style="-fx-background-color: #c0c0c0; -fx-border-color: #000000; -fx-border-width: 5;"
             xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1"
-            fx:controller="ru.nsu.gorin.lab3.controllers.tabsControllers.MediumStatsController">
+            fx:controller="ru.nsu.gorin.lab3.viewControllers.tabsControllers.MediumStatsController">
     <children>
         <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="109.0" layoutY="65.0" prefHeight="116.0" prefWidth="555.0" style="-fx-background-color: #ff0000; -fx-border-color: #000000; -fx-border-width: 5;" text="STATISTICS" textFill="#000000de" translateY="-25.0">
             <font>

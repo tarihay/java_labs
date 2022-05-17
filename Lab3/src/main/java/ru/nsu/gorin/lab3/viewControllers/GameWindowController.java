@@ -1,4 +1,4 @@
-package ru.nsu.gorin.lab3.controllers;
+package ru.nsu.gorin.lab3.viewControllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -16,6 +16,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.nsu.gorin.lab3.controllers.FieldController;
+import ru.nsu.gorin.lab3.controllers.StatsFileController;
 import ru.nsu.gorin.lab3.model.Field;
 import ru.nsu.gorin.lab3.model.TemplateTimer;
 
@@ -37,14 +39,14 @@ public class GameWindowController {
 
     private static final String AGAIN_TEXT = "Again";
 
-    boolean defeatStatus = false;
-    boolean winStatus = false;
+    private FieldController fieldController;
+    private final StatsFileController statsFileController = new StatsFileController();
 
-    boolean isFirstMove = true;
+    private boolean defeatStatus = false;
+    private boolean winStatus = false;
 
-    private int fieldX;
-    private int fieldY;
-    private int mineCount;
+    private boolean isFirstMove = true;
+
     private String nickName;
 
     private Field field;
@@ -155,7 +157,7 @@ public class GameWindowController {
                             flagCount++;
                             flagNum.setText(Integer.toString(flagCount));
 
-                            field.removeFlag(row, column);
+                            fieldController.removeFlag(row, column);
                         }
                     }
                 }
@@ -178,30 +180,26 @@ public class GameWindowController {
 
     /**
      * Метод заполняет всю информацию о поле, собранную в окне подготовки к игре
-     * @param fieldY размер поля по оси Y
-     * @param fieldX размер поля по оси X
-     * @param mineCount количество мин
      * @param nickName ник игрока
      * @param heightDifference на сколько новое окно отличается по высоте от стандартного
      * @param widthDifference на сколько новое окно отличается по ширине от стандартного
      *
      * @see GamePrepWindowController
      */
-    public void fillTheField(int fieldY, int fieldX, int mineCount, String nickName,
-                             double heightDifference, double widthDifference) {
-        this.fieldY = fieldY;
-        this.fieldX = fieldX;
-        this.mineCount = mineCount;
+    public void fillTheField(String nickName, double heightDifference, double widthDifference) {
         this.nickName = nickName;
 
+        flagCount = fieldController.getMineCount();
+
+        field = fieldController.getField();
+
         nickNameLabel.setText(nickName);
-
-        flagCount = mineCount;
         flagNum.setText(flagCount.toString());
-
-        field = new Field(fieldY, fieldX, mineCount);
-
         changeRowsColumnsAmount(heightDifference, widthDifference);
+    }
+
+    public void setFieldController(FieldController fieldController) {
+        this.fieldController = fieldController;
     }
 
     /**
@@ -218,8 +216,8 @@ public class GameWindowController {
         }
 
         fieldPane.getChildren().clear();
-        for (int x = 0; x < fieldX; x++) {
-            for (int y = 0; y < fieldY; y++) {
+        for (int x = 0; x < fieldController.getFieldX(); x++) {
+            for (int y = 0; y < fieldController.getFieldY(); y++) {
                 ImageView image = new ImageView(new Image(this.getClass().getResourceAsStream(BLOCK_PATH)));
                 image.setFitWidth(BLOCK_WIDTH);
                 image.setFitHeight(BLOCK_HEIGHT);
@@ -247,7 +245,7 @@ public class GameWindowController {
         Image image = new Image(this.getClass().getResourceAsStream(FIELD_BLOCK_PATH));
         if (fieldValue > NOTHING && fieldValue < MINE) {
             setCorrectImage(fieldValue, x, y);
-            field.setNonActive(x, y);
+            fieldController.setNonActive(x, y);
 
             if(isFirstMove) {
                 isFirstMove = false;
@@ -256,7 +254,7 @@ public class GameWindowController {
         }
         else if (fieldValue == NOTHING){
             fieldPane.add(new ImageView(image), x, y);
-            field.setNonActive(x, y);
+            fieldController.setNonActive(x, y);
             if (isFirstMove) {
                 isFirstMove = false;
                 openTheCellsByConditionIfNotAMine(x, y);
@@ -268,14 +266,14 @@ public class GameWindowController {
         else if (fieldValue >= MINE){
             if (isFirstMove) {
                 isFirstMove = false;
-                field.changeOneMinePosition(x, y);
+                fieldController.changeOneMinePosition(x, y);
                 openTheCell(x, y);
                 openTheCellsByConditionIfNotAMine(x, y);
             }
             else {
                 image = new Image(this.getClass().getResourceAsStream(HITMINE_PATH));
                 fieldPane.add(new ImageView(image), x, y);
-                field.setNonActive(x, y);
+                fieldController.setNonActive(x, y);
 
                 showDefeat();
             }
@@ -434,7 +432,7 @@ public class GameWindowController {
             flagCount++;
             flagNum.setText(Integer.toString(flagCount));
 
-            field.removeFlag(x, y);
+            fieldController.removeFlag(x, y);
         }
         else {
             Image image = new Image(this.getClass().getResourceAsStream(FLAG_PATH));
@@ -445,7 +443,7 @@ public class GameWindowController {
             if (field.getValue(x, y) >= MINE) {
                 hitMinesCount++;
             }
-            if (hitMinesCount == field.getMinesAmount()) {
+            if (hitMinesCount == fieldController.getMineCount()) {
                 showVictory();
             }
             field.setFlag(x, y);
@@ -460,7 +458,8 @@ public class GameWindowController {
 
         winText.setVisible(true);
         templateTimer.shutdown();
-        writeResults();
+        statsFileController.writeResults(fieldController.getFieldY(), fieldController.getFieldY(), fieldController.getMineCount(),
+                                        timerLabel.getText(), nickName);
 
         endGameChanges();
 
@@ -504,67 +503,4 @@ public class GameWindowController {
         menuButton.setVisible(true);
     }
 
-    /**
-     * Метод записывает результаты в случае победы
-     * Вызывается в методе showVictory()
-     */
-    private void writeResults() {
-        boolean isEasy = fieldY == EASY_FIELD_SIZE && fieldX == EASY_FIELD_SIZE && mineCount == EASY_MINES_AMOUNT;
-        boolean isMedium = fieldY == MEDIUM_FIELD_SIZE && fieldX == MEDIUM_FIELD_SIZE && mineCount == MEDIUM_MINES_AMOUNT;
-        boolean isHard = fieldY == HARD_FIELD_Y && fieldX == HARD_FIELD_X && mineCount == HARD_MINES_AMOUNT;
-
-        File file;
-        String currentResult = timerLabel.getText() + " " + nickName;
-        if (isEasy) {
-            file = new File(EASY_RESULTS_PATH);
-        }
-        else if (isMedium) {
-            file = new File(MEDIUM_RESULTS_PATH);
-        }
-        else if (isHard) {
-            file = new File(HARD_RESULTS_PATH);
-        }
-        else {
-            return;
-        }
-
-        List<String> list = changeTopPlaces(file, currentResult);
-
-        try (FileWriter writer = new FileWriter(file, false)) {
-            int i = 0;
-            for (String iterator : list) {
-                writer.write(iterator + "\n");
-                i++;
-                if (i > PLACES_AMOUNT) {
-                    break;
-                }
-            }
-        } catch (IOException e) {
-            logger.error(e);
-        }
-    }
-
-    /**
-     * Метод записывает в список все значения из файла и добавляет к ним текущий результат
-     * @param file файл считывания
-     * @param currentResult текущий результат
-     * @return возвращает получившийся лист
-     */
-    private List<String> changeTopPlaces(File file, String currentResult) {
-        List<String> list = new LinkedList<>();
-        try {
-            BufferedReader bufferedReader = new BufferedReader(new FileReader(file));
-            String line = bufferedReader.readLine();
-            while (line != null) {
-                list.add(line);
-                line = bufferedReader.readLine();
-            }
-        } catch (IOException e) {
-            logger.error(e);
-        }
-
-        list.add(currentResult);
-        list = list.stream().sorted().collect(Collectors.toList());
-        return list;
-    }
 }

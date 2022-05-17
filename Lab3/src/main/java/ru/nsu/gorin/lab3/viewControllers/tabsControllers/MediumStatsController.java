@@ -1,4 +1,4 @@
-package ru.nsu.gorin.lab3.controllers.tabsControllers;
+package ru.nsu.gorin.lab3.viewControllers.tabsControllers;
 
 import javafx.fxml.FXML;
 import javafx.scene.text.Text;
@@ -6,16 +6,15 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.*;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.*;
 
 import static ru.nsu.gorin.lab3.Constants.*;
 
 /**
- * Класс-контроллер EasyStatsTab.fxml файла
+ * Класс-контроллер MediumStatsTab.fxml файла
  */
-public class EasyStatsController {
-    private static final Logger logger = LogManager.getLogger(EasyStatsController.class);
+public class MediumStatsController {
+    private static final Logger logger = LogManager.getLogger(MediumStatsController.class);
 
     @FXML
     private Text firstPlaceText;
@@ -32,6 +31,9 @@ public class EasyStatsController {
     @FXML
     private Text seventhPlaceText;
 
+    private final Text[] places = {firstPlaceText, secondPlaceText, thirdPlaceText, fourthPlaceText, fifthPlaceText,
+            sixthPlaceText, seventhPlaceText};
+
     @FXML
     void initialize() throws IOException {
         fillThePlaces();
@@ -41,7 +43,7 @@ public class EasyStatsController {
      * Метод заполняет поля вкладки данными из файла easyStatsResults.txt
      */
     public void fillThePlaces() throws IOException {
-        File fin = new File(EASY_RESULTS_PATH);
+        File fin = new File(MEDIUM_RESULTS_PATH);
         List<String> list = new ArrayList<>();
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fin));
@@ -71,26 +73,6 @@ public class EasyStatsController {
      * @param string данные для вставки
      */
     private void modifyRightLabel(int position, String string) {
-        if (position == 0) {
-            firstPlaceText.setText(string);
-        }
-        if (position == 1) {
-            secondPlaceText.setText(string);
-        }
-        if (position == 2) {
-            thirdPlaceText.setText(string);
-        }
-        if (position == 3) {
-            fourthPlaceText.setText(string);
-        }
-        if (position == 4) {
-            fifthPlaceText.setText(string);
-        }
-        if (position == 5) {
-            sixthPlaceText.setText(string);
-        }
-        if (position == 6) {
-            seventhPlaceText.setText(string);
-        }
+        places[position].setText(string);
     }
 }

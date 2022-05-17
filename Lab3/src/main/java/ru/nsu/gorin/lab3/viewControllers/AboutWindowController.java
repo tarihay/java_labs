@@ -1,4 +1,4 @@
-package ru.nsu.gorin.lab3.controllers;
+package ru.nsu.gorin.lab3.viewControllers;
 
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;

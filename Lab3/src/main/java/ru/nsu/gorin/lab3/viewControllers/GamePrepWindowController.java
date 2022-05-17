@@ -1,4 +1,4 @@
-package ru.nsu.gorin.lab3.controllers;
+package ru.nsu.gorin.lab3.viewControllers;
 
 import javafx.application.Platform;
 import javafx.event.EventHandler;
@@ -17,6 +17,7 @@ import javafx.stage.WindowEvent;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import ru.nsu.gorin.lab3.controllers.FieldController;
 import ru.nsu.gorin.lab3.model.TemplateTimer;
 import ru.nsu.gorin.lab3.model.TimerListener;
 
@@ -34,16 +35,10 @@ public class GamePrepWindowController {
 
     private final static String STANDARD_NAME = "Nick";
 
+    private final FieldController fieldController = new FieldController();
+
     @FXML private GameWindowController gameWindowController;
 
-
-    private boolean isYNumCorrect = true;
-    private boolean isXNumCorrect = true;
-    private boolean isMineNumCorrect = true;
-
-    private int fieldX;
-    private int fieldY;
-    private int mineCount;
     private String nick;
 
     @FXML
@@ -103,63 +98,45 @@ public class GamePrepWindowController {
 
         playButton.setOnAction(event -> {
             if (easyBox.isSelected()) {
-                fieldY = EASY_FIELD_SIZE;
-                fieldX = EASY_FIELD_SIZE;
-                mineCount = EASY_MINES_AMOUNT;
+                fieldController.setAllData(EASY_FIELD_SIZE, EASY_FIELD_SIZE, EASY_MINES_AMOUNT);
             }
             if (normalBox.isSelected()) {
-                fieldY = MEDIUM_FIELD_SIZE;
-                fieldX = MEDIUM_FIELD_SIZE;
-                mineCount = MEDIUM_MINES_AMOUNT;
+                fieldController.setAllData(MEDIUM_FIELD_SIZE, MEDIUM_FIELD_SIZE, MEDIUM_MINES_AMOUNT);
             }
             if (hardBox.isSelected()) {
-                fieldY = HARD_FIELD_Y;
-                fieldX = HARD_FIELD_X;
-                mineCount = HARD_MINES_AMOUNT;
+                fieldController.setAllData(HARD_FIELD_Y, HARD_FIELD_X, HARD_MINES_AMOUNT);
             }
 
             if (customBox.isSelected()) {
+                int fieldX = 0;
+                int fieldY = 0;
+                int mineCount = 0;
                 try {
                     fieldY = Integer.parseInt(heightField.getText());
                 }
                 catch (Exception ex) {
-                    isYNumCorrect = false;
+                    fieldController.setYNumCorrect(false);
                     logger.warn("Check fieldY correctness");
                 }
                 try {
                     fieldX = Integer.parseInt(widthField.getText());
                 }
                 catch (Exception ex) {
-                    isXNumCorrect = false;
+                    fieldController.setXNumCorrect(false);
                     logger.warn("Check fieldX correctness");
                 }
                 try {
                     mineCount = Integer.parseInt(minesField.getText());
                 }
                 catch (Exception ex) {
-                    isMineNumCorrect = false;
+                    fieldController.setMineNumCorrect(false);
                     logger.warn("Check mineCount correctness");
                 }
+                fieldController.setAllData(fieldY, fieldX, mineCount);
             }
 
-            if (fieldY > HEIGHT_MAX || fieldY < HEIGHT_MIN) {
-                isYNumCorrect = false;
-            }
-            else {
-                isYNumCorrect = true;
-            }
-            if (fieldX > WIDTH_MAX || fieldX < WIDTH_MIN) {
-                isXNumCorrect = false;
-            }
-            else {
-                isXNumCorrect = true;
-            }
-            if (mineCount > MINE_MAX || mineCount < MINE_MIN) {
-                isMineNumCorrect = false;
-            }
-            else {
-                isMineNumCorrect = true;
-            }
+            fieldController.checkDataCorrectness();
+
 
             if (nickField.getText().isEmpty()) {
                 nick = STANDARD_NAME;
@@ -168,7 +145,7 @@ public class GamePrepWindowController {
                 nick = nickField.getText();
             }
 
-            if (isYNumCorrect && isXNumCorrect && isMineNumCorrect) {
+            if (fieldController.areFieldNumbersCorrect()) {
                 Stage stage = (Stage) playButton.getScene().getWindow();
                 stage.close();
 
@@ -181,8 +158,8 @@ public class GamePrepWindowController {
                 }
                 stage = new Stage();
 
-                double heightDifference = MENU_WINDOW_HEIGHT - (fieldY * BLOCK_HEIGHT + FIELD_HEIGHT_OFFSET);
-                double widthDifference = MENU_WINDOW_WIDTH - (fieldX * BLOCK_WIDTH + FIELD_WIDTH_OFFSET);
+                double heightDifference = MENU_WINDOW_HEIGHT - (fieldController.getFieldY() * BLOCK_HEIGHT + FIELD_HEIGHT_OFFSET);
+                double widthDifference = MENU_WINDOW_WIDTH - (fieldController.getFieldX() * BLOCK_WIDTH + FIELD_WIDTH_OFFSET);
 
                 double newHeight = MENU_WINDOW_HEIGHT;
                 double newWidth = MENU_WINDOW_WIDTH;
@@ -198,7 +175,8 @@ public class GamePrepWindowController {
                 }
 
                 gameWindowController = fxmlLoader.getController();
-                gameWindowController.fillTheField(fieldY, fieldX, mineCount, nick, heightDifference, widthDifference);
+                gameWindowController.setFieldController(fieldController);
+                gameWindowController.fillTheField(nick, heightDifference, widthDifference);
 
                 TemplateTimer templateTimer = new TemplateTimer();
                 templateTimer.addListener(new TimerListener() {

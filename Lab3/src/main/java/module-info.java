@@ -12,10 +12,12 @@ module ru.nsu.gorin.lab3.lab3 {
 
     opens ru.nsu.gorin.lab3 to javafx.fxml;
     exports ru.nsu.gorin.lab3;
-    exports ru.nsu.gorin.lab3.controllers.tabsControllers;
-    opens ru.nsu.gorin.lab3.controllers.tabsControllers to javafx.fxml;
+    exports ru.nsu.gorin.lab3.viewControllers.tabsControllers;
+    opens ru.nsu.gorin.lab3.viewControllers.tabsControllers to javafx.fxml;
     exports ru.nsu.gorin.lab3.controllers;
     opens ru.nsu.gorin.lab3.controllers to javafx.fxml;
     exports ru.nsu.gorin.lab3.model;
     opens ru.nsu.gorin.lab3.model to javafx.fxml;
+    exports ru.nsu.gorin.lab3.viewControllers;
+    opens ru.nsu.gorin.lab3.viewControllers to javafx.fxml;
 }
