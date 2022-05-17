@@ -1,18 +1,25 @@
 package ru.nsu.gorin.lab4.factory.store;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.nsu.gorin.lab4.factory.parts.Car;
 
 import java.math.BigDecimal;
+import java.util.Objects;
 import java.util.Random;
 
 /**
  * Класс диллера
  */
 public class Dealer {
+    private static final Logger logger = LogManager.getLogger(Dealer.class);
+
     private static final int DEFAULT_CAR_PRICE = 500;
     private static final int DEFAULT_CAR_DELTA = 100;
 
     private static final int FIVE_SECONDS = 5000;
+
+    private final Object monitor = new Object();
 
     private final Random random = new Random();
     private final BigDecimal delta = new BigDecimal(DEFAULT_CAR_DELTA);
@@ -36,7 +43,7 @@ public class Dealer {
     private void priceChanger() {
         while (true) {
             double deltaK = random.nextGaussian();
-            synchronized (this) {
+            synchronized (monitor) {
                 if (DEFAULT_CAR_DELTA + carPrice.intValue() < DEFAULT_CAR_PRICE) {
                     carPrice = new BigDecimal(DEFAULT_CAR_PRICE);
                 }
@@ -50,7 +57,7 @@ public class Dealer {
             try {
                 Thread.sleep(FIVE_SECONDS);
             } catch (InterruptedException e) {
-                e.printStackTrace();
+                logger.warn(e);
                 break;
             }
         }

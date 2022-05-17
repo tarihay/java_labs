@@ -1,5 +1,7 @@
 package ru.nsu.gorin.lab4.factory.suppliers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.nsu.gorin.lab4.factory.parts.Body;
 
 /**
@@ -8,6 +10,8 @@ import ru.nsu.gorin.lab4.factory.parts.Body;
  * @see DelaySupplier
  */
 public class BodySupplier extends DelaySupplier<Body> {
+    private static final Logger logger = LogManager.getLogger(BodySupplier.class);
+
     public BodySupplier(int delay) {
         super(delay);
     }
@@ -16,6 +20,7 @@ public class BodySupplier extends DelaySupplier<Body> {
         try {
             Thread.sleep(getDelay());
         } catch (InterruptedException e) {
+            logger.info("Caught InterruptedException, returning null");
             return null;
         }
         return new Body();

@@ -19,6 +19,8 @@ public class DealController extends Thread {
 
     private static final int QUEUE_SIZE = 1000;
 
+    private final Object monitor = new Object();
+
     private final Supplier<Car> outputStore;
     private final ThreadPool threadPool;
     private final AtomicInteger totalSold = new AtomicInteger(0);
@@ -46,16 +48,20 @@ public class DealController extends Thread {
      * Метод показывает общую прибыль за все время
      * @return Возвращает прибыль за все время
      */
-    public synchronized BigDecimal getTotalGain() {
-        return totalGain;
+    public BigDecimal getTotalGain() {
+        synchronized (monitor) {
+            return totalGain;
+        }
     }
 
     /**
      * Метод высчитывает складывает прибыль
      * @param gain прибыль с продажи машины
      */
-    private synchronized void addMoney(BigDecimal gain) {
-        totalGain = totalGain.add(gain);
+    private void addMoney(BigDecimal gain) {
+        synchronized (monitor) {
+            totalGain = totalGain.add(gain);
+        }
     }
 
     /**
@@ -90,7 +96,11 @@ public class DealController extends Thread {
                     logger.info("Sold car to dealer " + Thread.currentThread().getName() +  ": " + car);
                 }
             };
-            threadPool.addTask(task);
+            try {
+                threadPool.addTask(task);
+            } catch (InterruptedException e) {
+                logger.error(e);
+            }
         }
     }
 }

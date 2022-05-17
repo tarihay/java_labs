@@ -31,14 +31,15 @@ public class ThreadPool {
         }
     }
 
-    public void addTask(Task command) {
+    public void addTask(Task command) throws InterruptedException {
         if (!isRunning) {
             throw new RejectedExecutionException();
         }
         try {
             queue.put(command);
         } catch (InterruptedException e) {
-            e.printStackTrace();
+            logger.error(e);
+            throw e;
         }
     }
 

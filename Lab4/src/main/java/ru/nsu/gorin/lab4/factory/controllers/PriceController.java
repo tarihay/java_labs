@@ -12,6 +12,8 @@ import java.math.BigDecimal;
 public class PriceController extends Thread {
     private final Logger logger = LogManager.getLogger(this.getClass());
 
+    private static final int ONE_SEC = 1000;
+
     private final static int OK_CAR_PRICE = 500;
 
     private final Dealer dealer;
@@ -41,9 +43,11 @@ public class PriceController extends Thread {
                 logger.info("Car price is NOT ok: " + carPrice + "; stopping production...");
                 adapter.pauseProduction();
             }
+
             try {
-                Thread.sleep(1000);
+                Thread.sleep(ONE_SEC);
             } catch (InterruptedException e) {
+                logger.warn(e);
                 break;
             }
         }

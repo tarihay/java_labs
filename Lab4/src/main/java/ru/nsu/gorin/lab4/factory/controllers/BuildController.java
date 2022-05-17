@@ -1,5 +1,7 @@
 package ru.nsu.gorin.lab4.factory.controllers;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 import ru.nsu.gorin.lab4.factory.parts.Accessory;
 import ru.nsu.gorin.lab4.factory.parts.Body;
 import ru.nsu.gorin.lab4.factory.parts.Car;
@@ -14,6 +16,8 @@ import java.util.function.Supplier;
  * Класс контроллер построения машины
  */
 public class BuildController extends Thread {
+    private static final Logger logger = LogManager.getLogger(BuildController.class);
+
     private static final int QUEUE_SIZE = 1000;
 
     private final Supplier<Body> carBodyStore;
@@ -97,7 +101,11 @@ public class BuildController extends Thread {
                 }
             };
 
-            threadPool.addTask(task);
+            try {
+                threadPool.addTask(task);
+            } catch (InterruptedException e) {
+                logger.error(e);
+            }
 
             if (pause) {
                 synchronized (pauseObject) {
@@ -106,6 +114,7 @@ public class BuildController extends Thread {
                             pauseObject.wait();
                         } while (pause);
                     } catch (InterruptedException ignored) {
+                        logger.info("Interrupted exception ignored");
                     }
                 }
             }
