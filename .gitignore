@@ -18,3 +18,17 @@
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
+
+Lab1
+
+Lab2
+
+Lab3
+
+Lab4
+
+.idea
+target
+logs
+
+
