@@ -32,9 +32,6 @@ public class HardStatsController {
     @FXML
     private Text seventhPlaceText;
 
-    private final Text[] places = {firstPlaceText, secondPlaceText, thirdPlaceText, fourthPlaceText, fifthPlaceText,
-            sixthPlaceText, seventhPlaceText};
-
     @FXML
     void initialize() throws IOException {
         fillThePlaces();
@@ -74,6 +71,26 @@ public class HardStatsController {
      * @param string данные для вставки
      */
     private void modifyRightLabel(int position, String string) {
-        places[position].setText(string);
+        if (position == 0) {
+            firstPlaceText.setText(string);
+        }
+        if (position == 1) {
+            secondPlaceText.setText(string);
+        }
+        if (position == 2) {
+            thirdPlaceText.setText(string);
+        }
+        if (position == 3) {
+            fourthPlaceText.setText(string);
+        }
+        if (position == 4) {
+            fifthPlaceText.setText(string);
+        }
+        if (position == 5) {
+            sixthPlaceText.setText(string);
+        }
+        if (position == 6) {
+            seventhPlaceText.setText(string);
+        }
     }
 }

@@ -32,8 +32,6 @@ public class EasyStatsController {
     @FXML
     private Text seventhPlaceText;
 
-    private final Text[] places = {firstPlaceText, secondPlaceText, thirdPlaceText, fourthPlaceText, fifthPlaceText,
-                            sixthPlaceText, seventhPlaceText};
 
     @FXML
     void initialize() throws IOException {
@@ -45,14 +43,17 @@ public class EasyStatsController {
      */
     public void fillThePlaces() throws IOException {
         File fin = new File(EASY_RESULTS_PATH);
+        System.out.println("1");
         List<String> list = new ArrayList<>();
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fin));
+            System.out.println("2");
             String line = bufferedReader.readLine();
             while (line != null) {
                 list.add(line);
                 line = bufferedReader.readLine();
             }
+            System.out.println("3");
         } catch (IOException e) {
             logger.error(e);
             throw new IOException();
@@ -60,7 +61,9 @@ public class EasyStatsController {
 
         int i = 0;
         for (String iterator : list) {
+            System.out.println("4");
             modifyRightLabel(i, iterator);
+
             i++;
             if (i > PLACES_AMOUNT) {
                 break;
@@ -68,12 +71,33 @@ public class EasyStatsController {
         }
     }
 
+
     /**
      * Метод вставляет данные в нужный Text-Label
      * @param position позиция, на которой стоит конкретное значение
      * @param string данные для вставки
      */
     private void modifyRightLabel(int position, String string) {
-        places[position].setText(string);
+        if (position == 0) {
+            firstPlaceText.setText(string);
+        }
+        if (position == 1) {
+            secondPlaceText.setText(string);
+        }
+        if (position == 2) {
+            thirdPlaceText.setText(string);
+        }
+        if (position == 3) {
+            fourthPlaceText.setText(string);
+        }
+        if (position == 4) {
+            fifthPlaceText.setText(string);
+        }
+        if (position == 5) {
+            sixthPlaceText.setText(string);
+        }
+        if (position == 6) {
+            seventhPlaceText.setText(string);
+        }
     }
 }
