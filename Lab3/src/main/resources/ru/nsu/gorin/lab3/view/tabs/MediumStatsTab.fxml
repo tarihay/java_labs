@@ -1,0 +1,94 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="500.0"
+            prefWidth="768.0"
+            style="-fx-background-color: #c0c0c0; -fx-border-color: #000000; -fx-border-width: 5;"
+            xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1"
+            fx:controller="ru.nsu.gorin.lab3.viewControllers.tabsControllers.MediumStatsController">
+    <children>
+        <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="109.0" layoutY="65.0" prefHeight="116.0" prefWidth="555.0" style="-fx-background-color: #ff0000; -fx-border-color: #000000; -fx-border-width: 5;" text="STATISTICS" textFill="#000000de" translateY="-25.0">
+            <font>
+                <Font name="Berlin Sans FB Demi Bold" size="74.0" />
+            </font>
+            <effect>
+                <Bloom threshold="1.0" />
+            </effect>
+        </Label>
+      <Text layoutX="109.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" text="1. " wrappingWidth="28.53680419921875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="109.0" layoutY="235.0" strokeType="OUTSIDE" strokeWidth="0.0" text="2. " wrappingWidth="28.53680419921875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="109.0" layoutY="271.0" strokeType="OUTSIDE" strokeWidth="0.0" text="3. " wrappingWidth="28.53680419921875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="109.0" layoutY="307.0" strokeType="OUTSIDE" strokeWidth="0.0" text="4. " wrappingWidth="28.53680419921875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="109.0" layoutY="343.0" strokeType="OUTSIDE" strokeWidth="0.0" text="5. " wrappingWidth="28.53680419921875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="109.0" layoutY="379.0" strokeType="OUTSIDE" strokeWidth="0.0" text="6. " wrappingWidth="28.53680419921875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text layoutX="109.0" layoutY="415.0" strokeType="OUTSIDE" strokeWidth="0.0" text="7. " wrappingWidth="28.53680419921875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="firstPlaceText" layoutX="146.0" layoutY="199.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="434.91815185546875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="secondPlaceText" layoutX="146.0" layoutY="234.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="434.91815185546875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="thirdPlaceText" layoutX="146.0" layoutY="270.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="434.91815185546875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="fourthPlaceText" layoutX="146.0" layoutY="306.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="434.91815185546875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="fifthPlaceText" layoutX="146.0" layoutY="342.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="434.91815185546875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="sixthPlaceText" layoutX="146.0" layoutY="378.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="434.91815185546875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+      <Text fx:id="seventhPlaceText" layoutX="146.0" layoutY="414.0" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="434.91815185546875">
+         <font>
+            <Font size="25.0" />
+         </font>
+      </Text>
+    </children>
+</AnchorPane>

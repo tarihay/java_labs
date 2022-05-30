@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="500.0" prefWidth="768.0" style="-fx-background-color: #c0c0c0; -fx-border-color: #000000; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.gorin.lab3.viewControllers.AboutWindowController">
+    <children>
+        <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="109.0" layoutY="65.0" prefHeight="116.0" prefWidth="555.0" style="-fx-background-color: #ff0000; -fx-border-color: #000000; -fx-border-width: 5;" text="ABOUT GAME" textFill="#000000de" translateY="-25.0">
+            <font>
+                <Font name="Berlin Sans FB Demi Bold" size="74.0" />
+            </font>
+            <effect>
+                <Bloom threshold="1.0" />
+            </effect>
+        </Label>
+        <Button fx:id="backButton" alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="346.0" layoutY="400.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="88.0" style="-fx-background-color: #000000; -fx-background-radius: 10; -fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-radius: 7;" text="BACK" textAlignment="CENTER" textFill="WHITE" translateX="325.0" translateY="40.0">
+            <font>
+                <Font name="Bookman Old Style Bold" size="18.0" />
+            </font>
+        </Button>
+      <Text layoutX="109.0" layoutY="188.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Welcome to the non-original Minesweeper! ">
+         <font>
+            <Font name="System Bold" size="24.0" />
+         </font>
+      </Text>
+      <Text layoutX="109.0" layoutY="470.0" strokeType="OUTSIDE" strokeWidth="0.0" text="(C) Project was made by Igor Gorin, NSU student">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+      <Text layoutX="106.0" layoutY="217.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Minesweeper rules are very simple. The board is divided into cells, with mines randomly distributed. To win, you need to open all the cells. The number on a cell shows the number of mines adjacent to it. Using this information, you can determine cells that are safe, and cells that contain mines. Cells suspected of being mines can be marked with a flag using the right mouse button." textAlignment="JUSTIFY" wrappingWidth="555.2">
+         <font>
+            <Font size="20.0" />
+         </font>
+      </Text>
+    </children>
+</AnchorPane>
