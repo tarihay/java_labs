@@ -43,17 +43,14 @@ public class EasyStatsController {
      */
     public void fillThePlaces() throws IOException {
         File fin = new File(EASY_RESULTS_PATH);
-        System.out.println("1");
         List<String> list = new ArrayList<>();
         try {
             BufferedReader bufferedReader = new BufferedReader(new FileReader(fin));
-            System.out.println("2");
             String line = bufferedReader.readLine();
             while (line != null) {
                 list.add(line);
                 line = bufferedReader.readLine();
             }
-            System.out.println("3");
         } catch (IOException e) {
             logger.error(e);
             throw new IOException();
@@ -61,7 +58,6 @@ public class EasyStatsController {
 
         int i = 0;
         for (String iterator : list) {
-            System.out.println("4");
             modifyRightLabel(i, iterator);
 
             i++;
