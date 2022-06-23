@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane prefHeight="500.0" prefWidth="768.0" style="-fx-background-color: #c0c0c0; -fx-border-color: #000000; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/17.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.gorin.lab3.viewControllers.MenuWindowController">
+   <children>
+      <Label alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="109.0" layoutY="65.0" prefHeight="116.0" prefWidth="555.0" style="-fx-background-color: #ff0000; -fx-border-color: #000000; -fx-border-width: 5;" text="MINESWEEPER" textFill="#000000de" translateY="-25.0">
+         <font>
+            <Font name="Berlin Sans FB Demi Bold" size="74.0" />
+         </font>
+         <effect>
+            <Bloom threshold="1.0" />
+         </effect>
+      </Label>
+      <Button fx:id="playButton" graphicTextGap="0.0" layoutX="184.0" layoutY="207.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="400.0" style="-fx-background-color: #3f41bf; -fx-background-radius: 10; -fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-radius: 7;" text="PLAY" textFill="WHITE" underline="true">
+         <font>
+            <Font name="Bookman Old Style Bold" size="27.0" />
+         </font>
+         <effect>
+            <Glow level="0.45" />
+         </effect>
+      </Button>
+      <Button fx:id="statsButton" layoutX="184.0" layoutY="284.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="400.0" style="-fx-background-color: #008000; -fx-background-radius: 10; -fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-radius: 7;" text="STATS" textFill="WHITE" underline="true">
+         <font>
+            <Font name="Bookman Old Style Bold" size="22.0" />
+         </font>
+         <effect>
+            <Glow level="0.51" />
+         </effect>
+      </Button>
+      <Button fx:id="faqButton" layoutX="184.0" layoutY="364.0" mnemonicParsing="false" prefHeight="60.0" prefWidth="400.0" style="-fx-background-color: #30d5c8; -fx-background-radius: 10; -fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-radius: 7;" text="ABOUT" textFill="WHITE" underline="true">
+         <font>
+            <Font name="Bookman Old Style Bold" size="23.0" />
+         </font>
+         <effect>
+            <Glow level="0.49" />
+         </effect>
+      </Button>
+      <Button fx:id="exitButton" alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="346.0" layoutY="400.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="88.0" style="-fx-background-color: #000000; -fx-background-radius: 10; -fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-radius: 7;" text="EXIT" textAlignment="CENTER" textFill="WHITE" translateX="325.0" translateY="40.0">
+         <font>
+            <Font name="Bookman Old Style Bold" size="20.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

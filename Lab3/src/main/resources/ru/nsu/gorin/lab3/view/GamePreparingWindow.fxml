@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.CheckBox?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.effect.Bloom?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane fx:id="gamePrepWindow" prefHeight="500.0" prefWidth="768.0" style="-fx-background-color: #c0c0c0; -fx-border-color: #000000; -fx-border-width: 5;" xmlns="http://javafx.com/javafx/18" xmlns:fx="http://javafx.com/fxml/1" fx:controller="ru.nsu.gorin.lab3.viewControllers.GamePrepWindowController">
+    <children>
+        <Label fx:id="nameLabel" alignment="BASELINE_CENTER" contentDisplay="CENTER" layoutX="109.0" layoutY="65.0" prefHeight="116.0" prefWidth="555.0" style="-fx-background-color: #ff0000; -fx-border-color: #000000; -fx-border-width: 5;" text="MINESWEEPER" textFill="#000000de" translateY="-25.0">
+            <font>
+                <Font name="Berlin Sans FB Demi Bold" size="74.0" />
+            </font>
+            <effect>
+                <Bloom threshold="1.0" />
+            </effect>
+        </Label>
+        <Button fx:id="backButton" alignment="BOTTOM_CENTER" contentDisplay="RIGHT" layoutX="346.0" layoutY="400.0" mnemonicParsing="false" prefHeight="45.0" prefWidth="88.0" style="-fx-background-color: #000000; -fx-background-radius: 10; -fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-radius: 7;" text="BACK" textAlignment="CENTER" textFill="WHITE" translateX="325.0" translateY="40.0">
+            <font>
+                <Font name="Bookman Old Style Bold" size="18.0" />
+            </font>
+        </Button>
+        <VBox layoutX="109.0" layoutY="164.0" prefHeight="258.0" prefWidth="393.0" spacing="3.0">
+            <children>
+                <CheckBox fx:id="easyBox" mnemonicParsing="false" onAction="#handleEasyBox" selected="true" text="field size : 9x9, num of mines: 10 ">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </CheckBox>
+                <CheckBox fx:id="normalBox" mnemonicParsing="false" onAction="#handleNormalBox" text="field size : 16x16, num of mines: 40">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </CheckBox>
+                <CheckBox fx:id="hardBox" mnemonicParsing="false" onAction="#handleHardBox" text="field size : 16x30, num of mines: 99 ">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </CheckBox>
+                <CheckBox fx:id="customBox" mnemonicParsing="false" onAction="#handleCustomBox" text="Custom">
+                    <font>
+                        <Font size="18.0" />
+                    </font>
+                </CheckBox>
+                <VBox prefHeight="106.0" prefWidth="378.0">
+                    <children>
+                        <HBox fx:id="hBoxCustom" prefHeight="100.0" prefWidth="200.0" visible="false">
+                            <children>
+                                <VBox prefHeight="106.0" prefWidth="120.0">
+                                    <children>
+                                        <TextField fx:id="heightField" promptText="9">
+                                            <font>
+                                                <Font size="15.0" />
+                                            </font>
+                                        </TextField>
+                                        <Label text="min: 9, max: 24">
+                                            <font>
+                                                <Font size="15.0" />
+                                            </font>
+                                        </Label>
+                                        <TextField fx:id="minesField" promptText="10">
+                                            <font>
+                                                <Font size="15.0" />
+                                            </font>
+                                        </TextField>
+                                        <Label text="min: 10, max: 111">
+                                            <font>
+                                                <Font size="15.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                                <Label text="x">
+                                    <font>
+                                        <Font size="19.0" />
+                                    </font>
+                                </Label>
+                                <VBox prefHeight="106.0" prefWidth="120.0">
+                                    <children>
+                                        <TextField fx:id="widthField" promptText="9">
+                                            <font>
+                                                <Font size="15.0" />
+                                            </font>
+                                        </TextField>
+                                        <Label text="min: 9, max: 30">
+                                            <font>
+                                                <Font size="15.0" />
+                                            </font>
+                                        </Label>
+                                        <Label prefHeight="31.0" prefWidth="110.0" text="num of mines">
+                                            <font>
+                                                <Font size="18.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                                <VBox prefHeight="200.0" prefWidth="100.0">
+                                    <children>
+                                        <Label text="field size">
+                                            <font>
+                                                <Font size="18.0" />
+                                            </font>
+                                        </Label>
+                                    </children>
+                                </VBox>
+                            </children>
+                        </HBox>
+                    </children>
+                </VBox>
+                <HBox prefHeight="100.0" prefWidth="200.0">
+                    <children>
+                        <TextField fx:id="nickField" promptText="Nick">
+                            <font>
+                                <Font size="15.0" />
+                            </font>
+                        </TextField>
+                        <Label fx:id="nickLabel" text="Player's NickName">
+                            <font>
+                                <Font size="18.0" />
+                            </font>
+                        </Label>
+                    </children>
+                </HBox>
+            </children>
+        </VBox>
+        <Button fx:id="playButton" alignment="CENTER" contentDisplay="RIGHT" layoutX="310.0" layoutY="438.0" mnemonicParsing="false" prefHeight="46.0" prefWidth="148.0" style="-fx-background-color: #000000; -fx-background-radius: 10; -fx-border-color: #ffffff; -fx-border-width: 4; -fx-border-radius: 7;" text="PLAY" textAlignment="CENTER" textFill="WHITE">
+            <font>
+                <Font name="Bookman Old Style Bold" size="22.0" />
+            </font>
+        </Button>
+      <Text fx:id="checkCorrectnessText" fill="RED" layoutX="511.0" layoutY="302.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Check data correctness" visible="false">
+         <font>
+            <Font name="System Bold" size="18.0" />
+         </font>
+      </Text>
+    </children>
+</AnchorPane>
